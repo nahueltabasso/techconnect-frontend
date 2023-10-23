@@ -23,7 +23,10 @@ class LoginScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     const SizedBox(height: 10,),
-                    Text('Login', style: Theme.of(context).textTheme.headline4,),
+                    Text('Bienvenido', style: Theme.of(context).textTheme.headlineLarge,),
+                    const SizedBox(height: 15,),
+                    Text('Accede a tu cuenta', style: Theme.of(context).textTheme.headlineSmall,),
+
                     const SizedBox(height: 30,),
 
                     ChangeNotifierProvider(
@@ -99,20 +102,20 @@ class _LoginForm extends StatelessWidget {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               disabledColor: Colors.grey,
               elevation: 0,
-              color: Colors.deepPurple,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-                child: Text(loginForm.isLoading ? 'Espere' : 'Login', style: TextStyle(color: Colors.white),),
-              ),
+              color: Colors.lightBlue,
               onPressed: loginForm.isLoading ? null : () async {
                 FocusScope.of(context).unfocus();
                 // TODO Login form (submit)
                 if (!loginForm.isValidForm()) return;
                 loginForm.isLoading = true;
-                await Future.delayed(Duration(seconds: 2));
+                await Future.delayed(const Duration(seconds: 2));
                 loginForm.isLoading = false;
                 Navigator.pushReplacementNamed(context, 'home');
               },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+                child: Text(loginForm.isLoading ? 'Espere' : 'Login', style: const TextStyle(color: Colors.white),),
+              ),
             ),
 
             const SizedBox(height: 50,)
