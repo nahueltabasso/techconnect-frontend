@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:techconnect_frontend/models/new_user_dto.dart';
 import 'package:techconnect_frontend/providers/register_form_provider.dart';
+import 'package:techconnect_frontend/services/auth_service.dart';
+import 'package:techconnect_frontend/services/notificacion_service.dart';
 import 'package:techconnect_frontend/ui/input_decorations.dart';
+import 'package:techconnect_frontend/utils/constants.dart';
 import 'package:techconnect_frontend/widgets/auth_background.dart';
 import 'package:techconnect_frontend/widgets/card_container.dart';
 
@@ -54,6 +58,38 @@ class RegisterUserScreen extends StatelessWidget {
 class _RegisterForm extends StatelessWidget {
   const _RegisterForm({super.key});
 
+  void _registerUser(BuildContext context, RegisterFormProvider registerForm) async {
+    final authService = Provider.of<AuthService>(context, listen: false);
+
+    if (!registerForm.isValidForm()) return;
+    registerForm.isLoading = true;
+
+    final newUserDto = NewUserDto(
+      username: registerForm.username,
+      email: registerForm.email,
+      password: registerForm.password,
+      confirmPassword: registerForm.confirmPassword,
+      googleUser: false,
+      facebookUser: false,
+      appleUser: false,
+      firstLogin: false,
+      roles: null,
+      userLocked: false,
+      failsAttemps: 0
+    );
+
+    // TODO: Valid if the register is correct
+    final String? response = await authService.signUp(newUserDto);
+    if (response == null) {
+      Navigator.pushReplacementNamed(context, 'login');
+      NotificationService.showSuccessDialogAlert(context, 'Registrado', CommonConstant.REGISTER_SUCCESS_MESSAGE, null);
+    } 
+    if (response != null && response != '') {
+      NotificationService.showSnackbar(response);
+    }
+    registerForm.isLoading = false;
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -61,7 +97,7 @@ class _RegisterForm extends StatelessWidget {
 
     return Container(
       child: Form(
-        // TODO: Mantener referencia al key
+        // TODO: Maintain the reference of key
         key: registerForm.formKey,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
@@ -79,7 +115,7 @@ class _RegisterForm extends StatelessWidget {
               onChanged: (value) => registerForm.username = value,
               validator: (value) {
                 if (value != null && value.length > 0) return null;
-                return 'El nombre de usuario no puede ser vacio';
+                return CommonConstant.EMPTY_USERNAME_FIELD_ERROR;
               },
             ),
 
@@ -99,7 +135,7 @@ class _RegisterForm extends StatelessWidget {
                 String pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
                 RegExp regExp  = RegExp(pattern);
                 
-                return regExp.hasMatch(value ?? '') ? null : 'Email no valido!';
+                return regExp.hasMatch(value ?? '') ? null : CommonConstant.EMAIL_FIELD_ERROR;
               },
             ),
 
@@ -118,7 +154,7 @@ class _RegisterForm extends StatelessWidget {
               onChanged: (value) => registerForm.password = value,
               validator: (value) {
                 if (value != null && value.length > 0) return null;
-                return 'La contraseña no puede ser vacio';
+                return CommonConstant.EMPTY_PASSWORD_FIELD_ERROR;
               },
             ),
 
@@ -137,7 +173,7 @@ class _RegisterForm extends StatelessWidget {
               onChanged: (value) => registerForm.confirmPassword = value,
               validator: (value) {
                 if (value != null && value.length > 0) return null;
-                return 'La contraseña no puede ser vacio';
+                return CommonConstant.EMPTY_FIELD_ERROR;
               },
             ),
 
@@ -151,11 +187,7 @@ class _RegisterForm extends StatelessWidget {
               onPressed: registerForm.isLoading ? null : () async {
                 FocusScope.of(context).unfocus();
                 // TODO Login form (submit)
-                if (!registerForm.isValidForm()) return;
-                registerForm.isLoading = true;
-                await Future.delayed(const Duration(seconds: 2));
-                registerForm.isLoading = false;
-                Navigator.pushReplacementNamed(context, 'login');
+                _registerUser(context, registerForm);
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
@@ -170,4 +202,6 @@ class _RegisterForm extends StatelessWidget {
       ),
     );
   }
+
+
 }

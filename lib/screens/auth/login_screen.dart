@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:techconnect_frontend/providers/login_form_provider.dart';
+import 'package:techconnect_frontend/services/auth_service.dart';
+import 'package:techconnect_frontend/services/notificacion_service.dart';
 import 'package:techconnect_frontend/ui/input_decorations.dart';
+import 'package:techconnect_frontend/utils/constants.dart';
 import 'package:techconnect_frontend/widgets/auth_background.dart';
 import 'package:techconnect_frontend/widgets/card_container.dart';
 
@@ -56,10 +59,30 @@ class LoginScreen extends StatelessWidget {
 class _LoginForm extends StatelessWidget {
   const _LoginForm({super.key});
 
+  void _login(BuildContext context, LoginFormProvider loginForm, AuthService authService) async {
+    if (!loginForm.isValidForm()) return;
+    loginForm.isLoading = true;
+
+    // TODO: Valid if the login is correct
+    final String? response = await authService.signIn(loginForm.username, loginForm.password);
+    print(response);
+    if (response == null) {
+      Navigator.pushReplacementNamed(context, 'home');
+      NotificationService.showSuccessDialogAlert(context, 'Bienvenido', CommonConstant.LOGIN_SUCCESS_MESSAGE, null);
+    } else {
+      // TODO: Show error message
+      // NotificationService.showSnackbar(response);
+      // ignore: use_build_context_synchronously
+      NotificationService.showErrorDialogAlert(context, response);
+    }
+    loginForm.isLoading = false;
+  }
+
   @override
   Widget build(BuildContext context) {
 
     final loginForm = Provider.of<LoginFormProvider>(context);
+    final authService = Provider.of<AuthService>(context);
 
     return Container(
       child: Form(
@@ -70,18 +93,16 @@ class _LoginForm extends StatelessWidget {
           children: [
             TextFormField(
               autocorrect: false,
-              keyboardType: TextInputType.emailAddress,
+              keyboardType: TextInputType.text,
               decoration: InputDecorations.authInputDecoration(
-                hintText: 'joe@gmail.com',
-                labelText: 'Email',
+                hintText: 'joe',
+                labelText: 'Nombre de usuario',
                 prefixIcon: Icons.alternate_email_sharp
               ),
-              onChanged: (value) => loginForm.email = value,
+              onChanged: (value) => loginForm.username = value,
               validator: (value) {
-                String pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                RegExp regExp  = RegExp(pattern);
-                
-                return regExp.hasMatch(value ?? '') ? null : 'Email no valido!';
+                if (value != null && value.length > 0) return null;
+                return CommonConstant.EMPTY_USERNAME_FIELD_ERROR;
               },
             ),
 
@@ -93,13 +114,13 @@ class _LoginForm extends StatelessWidget {
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecorations.authInputDecoration(
                 hintText: '**********',
-                labelText: 'Password',
+                labelText: 'Contraseña',
                 prefixIcon: Icons.lock_outline
               ),
               onChanged: (value) => loginForm.password = value,
               validator: (value) {
                 if (value != null && value.length > 0) return null;
-                return 'El password no puede ser vacio';
+                return CommonConstant.EMPTY_PASSWORD_FIELD_ERROR;
               },
             ),
 
@@ -113,11 +134,7 @@ class _LoginForm extends StatelessWidget {
               onPressed: loginForm.isLoading ? null : () async {
                 FocusScope.of(context).unfocus();
                 // TODO Login form (submit)
-                if (!loginForm.isValidForm()) return;
-                loginForm.isLoading = true;
-                await Future.delayed(const Duration(seconds: 2));
-                loginForm.isLoading = false;
-                Navigator.pushReplacementNamed(context, 'home');
+                _login(context, loginForm, authService);
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
