@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:techconnect_frontend/models/new_user_dto.dart';
+import 'package:techconnect_frontend/models/password_dto.dart';
 import 'package:techconnect_frontend/utils/constants.dart';
 class AuthService extends ChangeNotifier {
 
@@ -10,7 +11,7 @@ class AuthService extends ChangeNotifier {
   final String authPath = '';
   final storage = FlutterSecureStorage();
 
-  // ENDPOINT TO REGISTER
+  // Endpoint to Register
   Future<String?> signUp(NewUserDto userDto) async {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -35,7 +36,7 @@ class AuthService extends ChangeNotifier {
     return null;
   }
 
-  // ENDPOINT TO LOGIN
+  // Endpoint to Login
   // Future<Map<String, dynamic>?> signIn(String username, String password) async {
   Future<String?> signIn(String username, String password) async {
     Map<String, String> headers = {
@@ -60,7 +61,7 @@ class AuthService extends ChangeNotifier {
     return "";
   }
 
-  // ENDPOINT TO FORGOT PASSWORD
+  // Endpoint to Forgot Password
   Future<String?> forgotPassword(String email) async {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -68,8 +69,22 @@ class AuthService extends ChangeNotifier {
 
     final url = Uri.http(_baseUrl, '/api/security/password/forgot-password', {'email': email});
     final response = await http.post(url, headers: headers);
-    print(response.statusCode);
-    print(response.body);
+    if (response.statusCode == 200) return null;
+    // If gets to this part means that an error occurred, so decode the body of response
+    final Map<String, dynamic> decodeResponse = json.decode(response.body);
+    if (decodeResponse.containsKey("errorCode")) return decodeResponse["message"];
+
+    return null;
+  }
+
+  // Endpoint to Reset Password
+  Future<String?> resetPassword(PasswordDTO passwordDTO) async {
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+    };
+
+    final url = Uri.http(_baseUrl, '/api/security/password/reset-password');
+    final response = await http.post(url, headers: headers, body: json.encode(passwordDTO));
     if (response.statusCode == 200) return null;
     // If gets to this part means that an error occurred, so decode the body of response
     final Map<String, dynamic> decodeResponse = json.decode(response.body);
