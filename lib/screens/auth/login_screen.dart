@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:techconnect_frontend/providers/login_form_provider.dart';
 import 'package:techconnect_frontend/services/auth_service.dart';
-import 'package:techconnect_frontend/services/notificacion_service.dart';
+import 'package:techconnect_frontend/services/notification_service.dart';
 import 'package:techconnect_frontend/ui/input_decorations.dart';
 import 'package:techconnect_frontend/utils/constants.dart';
 import 'package:techconnect_frontend/widgets/auth_background.dart';
@@ -124,10 +124,26 @@ class _LoginForm extends StatelessWidget {
               },
             ),
 
-            const SizedBox(height: 50,),
+            const SizedBox(height: 15,),
+
+            Align(
+              alignment: Alignment.bottomRight,
+              child: TextButton(
+                style: ButtonStyle(
+                  overlayColor: MaterialStateProperty.all(Colors.lightBlue.withOpacity(0.1)),
+                  shape: MaterialStateProperty.all(const StadiumBorder()),
+                  alignment: Alignment.bottomRight
+                ),
+                child: const Text('Olvidaste tu contraseña?', style: TextStyle(fontSize: 14, color: Colors.lightBlue),),
+                onPressed: () => Navigator.pushReplacementNamed(context, 'forgot-password'),
+              ),
+            ),
+
+            const SizedBox(height: 10,),
 
             MaterialButton(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              minWidth: 300.0,
               disabledColor: Colors.grey,
               elevation: 0,
               color: Colors.lightBlue,

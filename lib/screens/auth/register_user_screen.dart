@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:techconnect_frontend/models/new_user_dto.dart';
 import 'package:techconnect_frontend/providers/register_form_provider.dart';
 import 'package:techconnect_frontend/services/auth_service.dart';
-import 'package:techconnect_frontend/services/notificacion_service.dart';
+import 'package:techconnect_frontend/services/notification_service.dart';
 import 'package:techconnect_frontend/ui/input_decorations.dart';
 import 'package:techconnect_frontend/utils/constants.dart';
 import 'package:techconnect_frontend/widgets/auth_background.dart';
@@ -180,7 +180,8 @@ class _RegisterForm extends StatelessWidget {
             const SizedBox(height: 50,),
 
             MaterialButton(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              minWidth: 300.0,
               disabledColor: Colors.grey,
               elevation: 0,
               color: Colors.lightBlue,
