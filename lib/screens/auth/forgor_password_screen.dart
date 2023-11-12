@@ -78,6 +78,7 @@ class _ForgotPasswordForm extends StatelessWidget {
 
     final String? response = await authService.forgotPassword(forgotPasswordForm.email);
     if (response == null) {
+      Navigator.pushReplacementNamed(context, 'reset-password');
       NotificationService.showSuccessDialogAlert(context, 'Codigo Enviado', CommonConstant.FORGOT_PASSWORD_SUCCESS_LEGEND, null);
     } else {
       NotificationService.showErrorDialogAlert(context, response);
@@ -96,6 +97,7 @@ class _ForgotPasswordForm extends StatelessWidget {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           children: [
+            // ** FIELD EMAIL **
             TextFormField(
               autocorrect: false,
               keyboardType: TextInputType.emailAddress,

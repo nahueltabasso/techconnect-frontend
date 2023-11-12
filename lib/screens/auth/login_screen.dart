@@ -91,6 +91,8 @@ class _LoginForm extends StatelessWidget {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           children: [
+
+            // ** FIELD USERNAME **
             TextFormField(
               autocorrect: false,
               keyboardType: TextInputType.text,
@@ -108,6 +110,7 @@ class _LoginForm extends StatelessWidget {
 
             const SizedBox(height: 30,),
 
+            // ** FIELD PASSWORD **
             TextFormField(
               autocorrect: false,
               obscureText: true,
