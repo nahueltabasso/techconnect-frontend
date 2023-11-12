@@ -8,5 +8,6 @@ class CommonConstant {
   static String REGISTER_SUCCESS_MESSAGE = "Te has registrado con exito!";
   static String EMAIL_FIELD_ERROR = "Email no valido";
   static String EMPTY_FIELD_ERROR = "Este campo no puede estar vacio";
-
+  static String LEGEND_FORGOR_PASSWORD_SCREEN = "Por favor ingrese su email. Recibira un correo electronico con un codigo para poder modificar su contraseña";
+  static String FORGOT_PASSWORD_SUCCESS_LEGEND = "El codigo se ha enviado correctamente al email ingresado";
 }

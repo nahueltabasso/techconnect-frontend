@@ -6,9 +6,11 @@ import 'package:techconnect_frontend/models/new_user_dto.dart';
 import 'package:techconnect_frontend/utils/constants.dart';
 class AuthService extends ChangeNotifier {
 
-  final String _baseUrl = '172.20.0.3:8090';
+  final String _baseUrl = '172.19.0.3:8090';
+  final String authPath = '';
   final storage = FlutterSecureStorage();
 
+  // ENDPOINT TO REGISTER
   Future<String?> signUp(NewUserDto userDto) async {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -33,8 +35,9 @@ class AuthService extends ChangeNotifier {
     return null;
   }
 
+  // ENDPOINT TO LOGIN
   // Future<Map<String, dynamic>?> signIn(String username, String password) async {
-    Future<String?> signIn(String username, String password) async {
+  Future<String?> signIn(String username, String password) async {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
     };
@@ -55,6 +58,24 @@ class AuthService extends ChangeNotifier {
       return CommonConstant.BAD_CREDENTIALS;
     }
     return "";
+  }
+
+  // ENDPOINT TO FORGOT PASSWORD
+  Future<String?> forgotPassword(String email) async {
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+    };
+
+    final url = Uri.http(_baseUrl, '/api/security/password/forgot-password', {'email': email});
+    final response = await http.post(url, headers: headers);
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 200) return null;
+    // If gets to this part means that an error occurred, so decode the body of response
+    final Map<String, dynamic> decodeResponse = json.decode(response.body);
+    if (decodeResponse.containsKey("errorCode")) return decodeResponse["message"];
+
+    return null;
   }
 
   Future _saveInStorage(Map<String, dynamic> decodeResponse) async {
