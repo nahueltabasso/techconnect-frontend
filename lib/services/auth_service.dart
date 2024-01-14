@@ -5,9 +5,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:techconnect_frontend/models/new_user_dto.dart';
 import 'package:techconnect_frontend/models/password_dto.dart';
 import 'package:techconnect_frontend/utils/constants.dart';
+
 class AuthService extends ChangeNotifier {
 
-  final String _baseUrl = '172.19.0.3:8090';
+  final String _baseUrl = '172.19.0.2:8090';
   final String authPath = '';
   final storage = FlutterSecureStorage();
 
