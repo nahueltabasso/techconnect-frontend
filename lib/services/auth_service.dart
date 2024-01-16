@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:techconnect_frontend/models/new_user_dto.dart';
 import 'package:techconnect_frontend/models/password_dto.dart';
+import 'package:techconnect_frontend/models/user_dto.dart';
 import 'package:techconnect_frontend/utils/constants.dart';
 
 class AuthService extends ChangeNotifier {
@@ -11,6 +12,14 @@ class AuthService extends ChangeNotifier {
   final String _baseUrl = '172.19.0.2:8090';
   final String authPath = '';
   final storage = FlutterSecureStorage();
+  UserDto? _userDto = null;
+
+  UserDto? get userDto => _userDto;
+
+  set setUserDto(UserDto userDto) {
+    _userDto = userDto;
+  //   notifyListeners();
+  }
 
   // Endpoint to Register
   Future<String?> signUp(NewUserDto userDto) async {
@@ -52,6 +61,8 @@ class AuthService extends ChangeNotifier {
     print(response.statusCode);
     print(decodeResponse);
     if (response.statusCode == 200) {
+      final user = UserDto.fromRawJson(response.body);
+      setUserDto = user;
       _saveInStorage(decodeResponse);
       return null;
     }

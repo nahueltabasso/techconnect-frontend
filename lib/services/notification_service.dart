@@ -26,6 +26,9 @@ class NotificationService {
             Align(
               alignment: Alignment.center,
               child: FilledButton(
+                style: const ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll<Color>(Colors.lightBlue)
+                ),
                 onPressed: () => Navigator.pop(context, 'OK'),
                 child: const Text('Aceptar')
               ),
@@ -50,6 +53,9 @@ class NotificationService {
             Align(
               alignment: Alignment.center,
               child: FilledButton(
+                style: const ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll<Color>(Colors.lightBlue)
+                ),
                 onPressed: () => Navigator.pop(context, route),
                 child: const Text('Aceptar')
               ),

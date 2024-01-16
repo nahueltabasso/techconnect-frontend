@@ -11,6 +11,7 @@ class UserDto {
     String refreshToken;
     String type;
     DateTime currentDateTime;
+    bool firstLogin;
 
     UserDto({
         required this.id,
@@ -21,6 +22,7 @@ class UserDto {
         required this.refreshToken,
         required this.type,
         required this.currentDateTime,
+        required this.firstLogin,
     });
 
     factory UserDto.fromRawJson(String str) => UserDto.fromJson(json.decode(str));
@@ -36,6 +38,7 @@ class UserDto {
         refreshToken: json["refreshToken"],
         type: json["type"],
         currentDateTime: DateTime.parse(json["currentDateTime"]),
+        firstLogin: json["firstLogin"]
     );
 
     Map<String, dynamic> toJson() => {
@@ -47,6 +50,7 @@ class UserDto {
         "refreshToken": refreshToken,
         "type": type,
         "currentDateTime": currentDateTime.toIso8601String(),
+        "firstLogin": firstLogin
     };
 }
 

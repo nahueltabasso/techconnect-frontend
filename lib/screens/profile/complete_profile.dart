@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:techconnect_frontend/services/auth_service.dart';
 
-class HomeScreen extends StatelessWidget {
+class CompleteProfileScreen extends StatelessWidget {
    
-  const HomeScreen({Key? key}) : super(key: key);
+  const CompleteProfileScreen({Key? key}) : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       body: const Center(
-         child: Text('HomeScreen'),
+         child: Text('CompleteProfileScreen'),
       ),
     );
   }

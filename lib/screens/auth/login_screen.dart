@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:techconnect_frontend/models/user_dto.dart';
 import 'package:techconnect_frontend/providers/login_form_provider.dart';
 import 'package:techconnect_frontend/services/auth_service.dart';
 import 'package:techconnect_frontend/services/notification_service.dart';
@@ -67,6 +68,11 @@ class _LoginForm extends StatelessWidget {
     final String? response = await authService.signIn(loginForm.username, loginForm.password);
     print(response);
     if (response == null) {
+      final UserDto? loginUser = authService.userDto;
+      final String screen = loginUser!.firstLogin ? 'complete-profile':'home';
+
+      print("USUARIO LOGUEADO");
+      print(screen);
       Navigator.pushReplacementNamed(context, 'home');
       NotificationService.showSuccessDialogAlert(context, 'Bienvenido', CommonConstant.LOGIN_SUCCESS_MESSAGE, null);
     } else {
