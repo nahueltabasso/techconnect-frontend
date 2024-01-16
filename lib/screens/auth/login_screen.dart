@@ -71,9 +71,7 @@ class _LoginForm extends StatelessWidget {
       final UserDto? loginUser = authService.userDto;
       final String screen = loginUser!.firstLogin ? 'complete-profile':'home';
 
-      print("USUARIO LOGUEADO");
-      print(screen);
-      Navigator.pushReplacementNamed(context, 'home');
+      Navigator.pushReplacementNamed(context, screen);
       NotificationService.showSuccessDialogAlert(context, 'Bienvenido', CommonConstant.LOGIN_SUCCESS_MESSAGE, null);
     } else {
       // TODO: Show error message
