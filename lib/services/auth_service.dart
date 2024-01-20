@@ -9,7 +9,7 @@ import 'package:techconnect_frontend/utils/constants.dart';
 
 class AuthService extends ChangeNotifier {
 
-  final String _baseUrl = '172.19.0.2:8090';
+  final String _baseUrl = '172.21.0.4:8090';
   final String authPath = '';
   final storage = FlutterSecureStorage();
   UserDto? _userDto = null;
