@@ -13,4 +13,7 @@ class CommonConstant {
   static String LEGEND_RESET_PASSWORD_SCREEN = "Revise su email e ingrese el codigo de verificacion";
   static String FIELD_CODE_RESET_PASSWORD_ERROR = "El codigo de verificacion no puede ser nulo";
   static String RESET_PASSWORD_SUCCESS_SCEEN = "La contraseña se ha modificado correctamente!";
+  static String FIRST_NAME_ERROR = "El nombre no puede estar vacio!";
+  static String LAST_NAME_ERROR = "El apellido no puede estar vacio!";
+
 }

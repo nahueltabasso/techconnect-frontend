@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:provider/provider.dart';
+import 'package:techconnect_frontend/providers/complete_profile_provider.dart';
+import 'package:techconnect_frontend/screens/profile/forms/personal_data_form.dart';
+import 'package:techconnect_frontend/screens/profile/forms/study_hobby_form.dart';
+import 'package:techconnect_frontend/screens/profile/forms/upload_profile_photo_form.dart';
 import 'package:techconnect_frontend/services/auth_service.dart';
 
 class CompleteProfileScreen extends StatefulWidget {
@@ -14,12 +18,15 @@ class CompleteProfileScreen extends StatefulWidget {
 class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
 
   int activeStep = 0;
-  int upperBound = 3;
+  int upperBound = 1;
+  PageController _pageController = PageController(initialPage: 0);
 
   @override
   Widget build(BuildContext context) {
 
     final authService = Provider.of<AuthService>(context, listen: false);
+    final completeProfileForm = Provider.of<CompleteProfileProvider>(context);
+    final userEmail = authService.userDto!.email;
 
     return Scaffold(
       appBar: AppBar(
@@ -36,43 +43,59 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            IconStepper(
-              icons: const [
-                Icon(Icons.person_4_rounded),
-                Icon(Icons.school_outlined),
-                Icon(Icons.photo_camera),
-                Icon(Icons.location_city)
-              ],
-              // ActiveStep property set to activeStep variable defined above
-              activeStep: activeStep,
-              // This ensures step-tapping updates the activeStep
-              onStepReached: (index) {
-                setState(() {
-                  activeStep = index;
-                });
-              },
-            ),
-            
-            header(),
-            
-            Expanded(
-              child: FittedBox(
-                child: Center(
-                  child: Text('$activeStep'),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              IconStepper(
+                icons: const [
+                  Icon(Icons.person_4_rounded),
+                  Icon(Icons.school_outlined),
+                  Icon(Icons.photo_camera),
+                  // Icon(Icons.location_city)
+                ],
+                // ActiveStep property set to activeStep variable defined above
+                activeStep: activeStep,
+                // This ensures step-tapping updates the activeStep
+                onStepReached: (index) {
+                  setState(() {
+                    activeStep = index;
+                  });
+                },
+              ),
+              
+              header(),
+              
+              SizedBox(
+                height: 570,
+                width: 500,
+                child: PageView(
+                  scrollDirection: Axis.vertical,
+                  physics: const NeverScrollableScrollPhysics(),
+                  controller: _pageController,
+                  children: [
+                    PersonalDataForm(completeProfileForm: completeProfileForm, email: userEmail),
+                    StudyHobbyForm(completeProfileForm: completeProfileForm),
+                    UploadProfilePhotoForm(), 
+                   // StudyHobbyForm(completeProfileForm: completeProfileForm)
+                  ],
+                  onPageChanged: (value) {
+                    print('Active step $activeStep');
+                    setState(() {
+                      activeStep = value;
+                    });
+                  },
                 ),
               ),
-            ),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                previousButton(),
-                nextButton()
-              ],
-            )
-          ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  previousButton(),
+                  nextButton()
+                ],
+              )
+            ],
+          ),
         ),
       )
     );
@@ -85,13 +108,19 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
         backgroundColor: MaterialStatePropertyAll<Color>(Colors.lightBlue),
       ),
       onPressed: () {
-        print("ENTRA");
+        print("Current activeStep: $activeStep");
+        // Accede a completeProfileForm
+        final completeProfileForm = Provider.of<CompleteProfileProvider>(context, listen: false);
+
         if (activeStep == upperBound) {
+          print(completeProfileForm.isValidForm());
           print("En este momento hay que ir al endpoint");
         }
+
         // Increment activeStep, when the next button is tapped. However, check for upper bound.
         if (activeStep < upperBound) {
           setState(() {
+            _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
             activeStep++;
           });
         }
@@ -107,6 +136,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
         // Decrement activeStep, when the previous button is tapped. However, check for lower bound i.e., must be greater than 0.
         if (activeStep > 0) {
           setState(() {
+            _pageController.previousPage(duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
             activeStep--;
           });
         }
@@ -154,7 +184,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
       case 3:
         return 'Domicilio';
       default:
-        return 'Introduction';
+        return '';
     }
   }
 

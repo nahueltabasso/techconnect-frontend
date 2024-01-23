@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:techconnect_frontend/providers/complete_profile_provider.dart';
 import 'package:techconnect_frontend/screens/auth/check_auth_screen.dart';
 import 'package:techconnect_frontend/screens/auth/forgor_password_screen.dart';
 import 'package:techconnect_frontend/screens/auth/login_screen.dart';
@@ -20,6 +21,7 @@ class AppState extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthService()),
+        ChangeNotifierProvider(create: (context) => CompleteProfileProvider(),)
       ],
       child: const MyApp(),
     );
