@@ -10,6 +10,7 @@ import 'package:techconnect_frontend/screens/home_screen.dart';
 import 'package:techconnect_frontend/screens/profile/complete_profile.dart';
 import 'package:techconnect_frontend/services/auth_service.dart';
 import 'package:techconnect_frontend/services/notification_service.dart';
+import 'package:techconnect_frontend/services/user_profile_servide.dart';
 
 void main() => runApp(AppState());
 
@@ -21,6 +22,7 @@ class AppState extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthService()),
+        ChangeNotifierProvider(create: (context) => UserProfileService()),
         ChangeNotifierProvider(create: (context) => CompleteProfileProvider(),)
       ],
       child: const MyApp(),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class CompleteProfileProvider extends ChangeNotifier {
@@ -8,10 +10,11 @@ class CompleteProfileProvider extends ChangeNotifier {
   String lastName = '';
   String email = '';
   String phoneNumber = '';
-  DateTime? birthDate;
+  DateTime birthDate = DateTime.now();
   String studies = '';
   String biography = '';
   String personalStatus = '';
+  File? profilePhoto = null;
   
   bool _isLoading = false;
 
@@ -23,14 +26,17 @@ class CompleteProfileProvider extends ChangeNotifier {
   }
 
   bool isValidForm() {
-    print(firstName);
-    print(lastName);
-    print(email);
-    print(phoneNumber);
-    print(birthDate);
-    print(studies);
-    print(biography);
-    print(personalStatus);
+    print("Valido FORM");
+    // print(firstName);
+    // print(lastName);
+    // print(email);
+    // print(phoneNumber);
+    // print(birthDate);
+    // print(studies);
+    // print(biography);
+    // print(personalStatus);
+    // print('File name ${profilePhoto!.path}');
+    print("End valid form");
     return formKey.currentState?.validate() ?? false;
   }
 

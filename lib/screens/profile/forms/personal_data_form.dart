@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:techconnect_frontend/providers/complete_profile_provider.dart';
 import 'package:techconnect_frontend/ui/input_decorations.dart';
@@ -182,9 +183,12 @@ class _PersonalDataFormState extends State<PersonalDataForm> {
      if (_picked != null) {
       // ignore: use_build_context_synchronously
       final completeProfileForm = Provider.of<CompleteProfileProvider>(context, listen: false);
-      completeProfileForm.birthDate = _picked;
+      String formattedDate = DateFormat('yyyy-MM-ddTHH:mm:ss').format(_picked);
+      formattedDate = formattedDate.replaceFirst('T', ' ');
+      DateTime dateTime = DateTime.parse(formattedDate);
+      completeProfileForm.birthDate = dateTime;
       setState(() {
-        _dateController.text = _picked.toString().split(" ")[0];
+        _dateController.text = _picked.toString().split(" ")[0].toString();
       });
      }
   }

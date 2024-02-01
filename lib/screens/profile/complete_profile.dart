@@ -1,11 +1,14 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:provider/provider.dart';
+import 'package:techconnect_frontend/models/user_profile_dto.dart';
 import 'package:techconnect_frontend/providers/complete_profile_provider.dart';
 import 'package:techconnect_frontend/screens/profile/forms/personal_data_form.dart';
 import 'package:techconnect_frontend/screens/profile/forms/study_hobby_form.dart';
 import 'package:techconnect_frontend/screens/profile/forms/upload_profile_photo_form.dart';
 import 'package:techconnect_frontend/services/auth_service.dart';
+import 'package:techconnect_frontend/services/user_profile_servide.dart';
 
 class CompleteProfileScreen extends StatefulWidget {
    
@@ -18,7 +21,7 @@ class CompleteProfileScreen extends StatefulWidget {
 class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
 
   int activeStep = 0;
-  int upperBound = 1;
+  int upperBound = 2;
   PageController _pageController = PageController(initialPage: 0);
 
   @override
@@ -75,7 +78,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                   children: [
                     PersonalDataForm(completeProfileForm: completeProfileForm, email: userEmail),
                     StudyHobbyForm(completeProfileForm: completeProfileForm),
-                    UploadProfilePhotoForm(), 
+                    UploadProfilePhotoForm(completeProfileForm: completeProfileForm,), 
                    // StudyHobbyForm(completeProfileForm: completeProfileForm)
                   ],
                   onPageChanged: (value) {
@@ -91,13 +94,27 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   previousButton(),
-                  nextButton()
+                  if (activeStep < upperBound) // Show in the previous steps
+                    nextButton()
+                  else if (activeStep == upperBound) // Show only in the last step
+                    submitButton(completeProfileForm)
+                  // nextButton()
                 ],
               )
             ],
           ),
         ),
       )
+    );
+  }
+
+  Widget submitButton(CompleteProfileProvider completeProfileForm) {
+    return ElevatedButton(
+      style: const ButtonStyle(
+        backgroundColor: MaterialStatePropertyAll<Color>(Colors.lightBlue),
+      ),
+      child: const Text('Guardar', style: TextStyle(color: Colors.black),),
+      onPressed: () => saveNewProfile(completeProfileForm),
     );
   }
 
@@ -188,6 +205,33 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
     }
   }
 
+  Future<void> saveNewProfile(CompleteProfileProvider completeProfileForm) async {
+    final authService = Provider.of<AuthService>(context, listen: false);
+    final userProfileService = Provider.of<UserProfileService>(context, listen: false);
+
+    print("Debajo se vera si el formulario es valido o no");
+    print(completeProfileForm.isValidForm());
+
+    final Map<String, dynamic> userProfileData = {
+      'firstName': completeProfileForm.firstName,
+      'lastName': completeProfileForm.lastName,
+      'email': completeProfileForm.email,
+      'phoneNumber': completeProfileForm.phoneNumber,
+      'birthDate': completeProfileForm.birthDate.toString(),
+      'verifiedProfile': false,
+      'personalStatus': completeProfileForm.personalStatus,
+      'studies': completeProfileForm.studies,
+      'biography': completeProfileForm.biography,
+      'userId': authService.userDto!.id,
+      'activeProfile': true
+    };
+
+    File profilePhoto = completeProfileForm.profilePhoto!;
+
+    UserProfileDto? userProfileDto = await userProfileService.saveProfile(userProfileData, profilePhoto);
+
+    // print(newUserProfile);
+  }
 
 }
 

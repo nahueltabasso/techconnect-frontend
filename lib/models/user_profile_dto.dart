@@ -2,12 +2,12 @@ import 'dart:convert';
 
 class UserProfileDto {
   
-    int id;
+    int? id;
     String firstName;
     String lastName;
     String email;
     dynamic phoneNumber;
-    String profilePhoto;
+    String? profilePhoto;
     DateTime birthDate;
     bool verifiedProfile;
     dynamic personalStatus;
@@ -17,12 +17,12 @@ class UserProfileDto {
     bool activeProfile;
 
     UserProfileDto({
-        required this.id,
+        this.id,
         required this.firstName,
         required this.lastName,
         required this.email,
         required this.phoneNumber,
-        required this.profilePhoto,
+        this.profilePhoto,
         required this.birthDate,
         required this.verifiedProfile,
         required this.personalStatus,

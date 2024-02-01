@@ -9,7 +9,7 @@ import 'package:techconnect_frontend/utils/constants.dart';
 
 class AuthService extends ChangeNotifier {
 
-  final String _baseUrl = '172.21.0.4:8090';
+  final String _baseUrl = '192.168.144.1:8090';
   final String authPath = '';
   final storage = FlutterSecureStorage();
   UserDto? _userDto = null;
@@ -69,6 +69,10 @@ class AuthService extends ChangeNotifier {
 
     if (decodeResponse["errorCode"] == 'BAD_CREDENTIALS') {
       return CommonConstant.BAD_CREDENTIALS;
+    }
+
+    if (decodeResponse["errorCode"] == 'USER_LOCKED') {
+      return CommonConstant.USER_LOCKED;
     }
     return "";
   }
