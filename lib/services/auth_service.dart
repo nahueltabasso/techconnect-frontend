@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:techconnect_frontend/config/app_config.dart';
 import 'package:techconnect_frontend/models/new_user_dto.dart';
 import 'package:techconnect_frontend/models/password_dto.dart';
 import 'package:techconnect_frontend/models/user_dto.dart';
@@ -9,8 +10,7 @@ import 'package:techconnect_frontend/utils/constants.dart';
 
 class AuthService extends ChangeNotifier {
 
-  final String _baseUrl = '192.168.144.1:8090';
-  final String authPath = '';
+  final String _baseUrl = AppConfig.API_URL;
   final storage = FlutterSecureStorage();
   UserDto? _userDto = null;
 
@@ -18,7 +18,7 @@ class AuthService extends ChangeNotifier {
 
   set setUserDto(UserDto userDto) {
     _userDto = userDto;
-  //   notifyListeners();
+    notifyListeners();
   }
 
   // Endpoint to Register
@@ -58,7 +58,6 @@ class AuthService extends ChangeNotifier {
     final url = Uri.http(_baseUrl, '/api/security/auth/sign-in');
     final response = await http.post(url, headers: headers, body: json.encode(body));
     final Map<String, dynamic> decodeResponse = json.decode(response.body);
-    print(response.statusCode);
     print(decodeResponse);
     if (response.statusCode == 200) {
       final user = UserDto.fromRawJson(response.body);

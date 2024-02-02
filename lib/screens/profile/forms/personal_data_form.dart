@@ -177,10 +177,24 @@ class _PersonalDataFormState extends State<PersonalDataForm> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(1900),
-      lastDate:  DateTime.now()
-     );
+      lastDate:  DateTime.now(),
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.dark().copyWith(
+            colorScheme: const ColorScheme.dark(
+                primary: Colors.lightBlue,
+                onPrimary: Colors.white,
+                surface: Colors.white,
+                onSurface: Colors.black,
+                ),
+            dialogBackgroundColor:Colors.blue[900],
+          ),
+          child: child!,
+        );
+      },
+    );
 
-     if (_picked != null) {
+    if (_picked != null) {
       // ignore: use_build_context_synchronously
       final completeProfileForm = Provider.of<CompleteProfileProvider>(context, listen: false);
       String formattedDate = DateFormat('yyyy-MM-ddTHH:mm:ss').format(_picked);

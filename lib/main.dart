@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:techconnect_frontend/providers/complete_profile_provider.dart';
 import 'package:techconnect_frontend/screens/auth/check_auth_screen.dart';
 import 'package:techconnect_frontend/screens/auth/forgor_password_screen.dart';
@@ -11,8 +12,13 @@ import 'package:techconnect_frontend/screens/profile/complete_profile.dart';
 import 'package:techconnect_frontend/services/auth_service.dart';
 import 'package:techconnect_frontend/services/notification_service.dart';
 import 'package:techconnect_frontend/services/user_profile_servide.dart';
+import 'package:techconnect_frontend/config/app_config.dart';
 
-void main() => runApp(AppState());
+// void main() => runApp(AppState());
+void main() async {
+  await dotenv.load(fileName: "./.env");
+  runApp(AppState());
+}
 
 
 class AppState extends StatelessWidget {
@@ -36,6 +42,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(AppConfig.API_URL);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'TechConnection',

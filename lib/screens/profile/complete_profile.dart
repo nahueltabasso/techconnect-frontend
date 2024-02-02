@@ -8,6 +8,7 @@ import 'package:techconnect_frontend/screens/profile/forms/personal_data_form.da
 import 'package:techconnect_frontend/screens/profile/forms/study_hobby_form.dart';
 import 'package:techconnect_frontend/screens/profile/forms/upload_profile_photo_form.dart';
 import 'package:techconnect_frontend/services/auth_service.dart';
+import 'package:techconnect_frontend/services/notification_service.dart';
 import 'package:techconnect_frontend/services/user_profile_servide.dart';
 
 class CompleteProfileScreen extends StatefulWidget {
@@ -97,7 +98,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                   if (activeStep < upperBound) // Show in the previous steps
                     nextButton()
                   else if (activeStep == upperBound) // Show only in the last step
-                    submitButton(completeProfileForm)
+                    submitButton(context, completeProfileForm)
                   // nextButton()
                 ],
               )
@@ -108,13 +109,13 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
     );
   }
 
-  Widget submitButton(CompleteProfileProvider completeProfileForm) {
+  Widget submitButton(BuildContext context, CompleteProfileProvider completeProfileForm) {
     return ElevatedButton(
       style: const ButtonStyle(
         backgroundColor: MaterialStatePropertyAll<Color>(Colors.lightBlue),
       ),
       child: const Text('Guardar', style: TextStyle(color: Colors.black),),
-      onPressed: () => saveNewProfile(completeProfileForm),
+      onPressed: () => saveNewProfile(completeProfileForm, context),
     );
   }
 
@@ -205,7 +206,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
     }
   }
 
-  Future<void> saveNewProfile(CompleteProfileProvider completeProfileForm) async {
+  Future<void> saveNewProfile(CompleteProfileProvider completeProfileForm, BuildContext context) async {
     final authService = Provider.of<AuthService>(context, listen: false);
     final userProfileService = Provider.of<UserProfileService>(context, listen: false);
 
@@ -228,9 +229,21 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
 
     File profilePhoto = completeProfileForm.profilePhoto!;
 
-    UserProfileDto? userProfileDto = await userProfileService.saveProfile(userProfileData, profilePhoto);
+    UserProfileDto? userProfileDto = 
+                  await userProfileService.saveProfile(userProfileData, profilePhoto, context);
 
-    // print(newUserProfile);
+    if (userProfileDto != null) {
+      Navigator.pushReplacementNamed(context, 'home');
+      // ignore: use_build_context_synchronously
+      NotificationService.showSuccessDialogAlert(
+        context,
+        'Bienvenido', 
+        'Bienvenido por primera vez a la aplicacion ${userProfileDto.firstName}', 
+        null
+      );
+      return;
+    } 
+    // Navigator.pushReplacementNamed(context, 'complete-profile');
   }
 
 }

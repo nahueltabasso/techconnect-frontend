@@ -1,6 +1,7 @@
 class CommonConstant {
 
   static String BAD_CREDENTIALS = "Nombre de usuario o contraseña incorrectas";
+  static String USER_LOCKED = "Usuario bloqueado. Para poder iniciar sesion debe primero desbloquear su usuario";
   static String NOT_VALID_PASSWORD = "Contraseña no valida. Establesca una contraseña mas segura";  
   static String EMPTY_USERNAME_FIELD_ERROR = "El nombre de usuario no puede ser vacio";
   static String EMPTY_PASSWORD_FIELD_ERROR = "La contraseña no puede ser vacia";
