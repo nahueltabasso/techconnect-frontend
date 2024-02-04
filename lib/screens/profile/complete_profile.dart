@@ -61,13 +61,16 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
               
               header(),
 
-              const SizedBox(height: 50,),
-
               if (completeProfileForm.isLoading)
-                const Center(
-                  child: CircularProgressIndicator(),
+                const Column(
+                  children:  [
+                    SizedBox(height: 50,),
+                    Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ],
                 ),
-              
+
               SizedBox(
                 height: 570,
                 width: 500,

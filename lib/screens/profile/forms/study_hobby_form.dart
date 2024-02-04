@@ -38,6 +38,7 @@ class _StudyHobbyFormState extends State<StudyHobbyForm> {
                   hintText: "",
                   prefixIcon: Icons.school_rounded
                 ),
+                initialValue: completeProfileForm.studies,
                 onChanged: (value) => completeProfileForm.studies = value,
               ),
             ),
@@ -55,6 +56,7 @@ class _StudyHobbyFormState extends State<StudyHobbyForm> {
                   hintText: "Cuentanos sobre ti",
                   prefixIcon: Icons.history
                 ),
+                initialValue: completeProfileForm.biography,
                 onChanged: (value) => completeProfileForm.biography = value,
               ),
             )
