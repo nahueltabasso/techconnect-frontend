@@ -13,7 +13,7 @@ class CompleteProfileProvider extends ChangeNotifier {
   DateTime birthDate = DateTime.now();
   String studies = '';
   String biography = '';
-  String personalStatus = '';
+  String personalStatus = 'Soltero/a';
   File? profilePhoto = null;
   
   bool _isLoading = false;

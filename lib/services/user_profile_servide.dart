@@ -39,24 +39,23 @@ class UserProfileService extends ChangeNotifier {
     try {
       final response = await request.send();
       final jsonResponse = await response.stream.bytesToString();
-      // final decodedData = json.decode(jsonResponse);
 
       if (response.statusCode == 201) {
-        // La solicitud fue exitosa, puedes manejar la respuesta del backend aquí
+        // Successfull request, handler the response here
         print('Respuesta del servidor: ${response.statusCode}');
         print(jsonResponse);
         final userProfile = UserProfileDto.fromRawJson(jsonResponse);
         setLoggedUserProfile = userProfile;
         return userProfile;
       } else {
-        // La solicitud falló, maneja el error aquí
+        // Failed requst, handler the error here
         print('Error en la solicitud: ${response.statusCode}');
         final error = HttpErrorDto.fromRawJson(jsonResponse);
         NotificationService.showErrorDialogAlert(context, error.message);
         return null;
       }
     } catch (e) {
-      print('Error al enviar la solicitud: $e');
+      print('Error : $e');
       return null;
     }
 

@@ -36,14 +36,6 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
       appBar: AppBar(
         title: const Center(child: Text('Completa tu Perfil')),
         backgroundColor: Colors.lightBlue,
-        leading: IconButton(
-          icon: const Icon(Icons.login_outlined),
-          color: Colors.black,
-          onPressed: () {
-            authService.signOut();
-            Navigator.pushReplacementNamed(context, 'login');
-          },
-        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -68,6 +60,13 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
               ),
               
               header(),
+
+              const SizedBox(height: 50,),
+
+              if (completeProfileForm.isLoading)
+                const Center(
+                  child: CircularProgressIndicator(),
+                ),
               
               SizedBox(
                 height: 570,
@@ -114,8 +113,8 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
       style: const ButtonStyle(
         backgroundColor: MaterialStatePropertyAll<Color>(Colors.lightBlue),
       ),
+      onPressed: _isSaveButtonEnabled() ? () => saveNewProfile(completeProfileForm, context) : null,
       child: const Text('Guardar', style: TextStyle(color: Colors.black),),
-      onPressed: () => saveNewProfile(completeProfileForm, context),
     );
   }
 
@@ -127,14 +126,6 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
       ),
       onPressed: () {
         print("Current activeStep: $activeStep");
-        // Accede a completeProfileForm
-        final completeProfileForm = Provider.of<CompleteProfileProvider>(context, listen: false);
-
-        if (activeStep == upperBound) {
-          print(completeProfileForm.isValidForm());
-          print("En este momento hay que ir al endpoint");
-        }
-
         // Increment activeStep, when the next button is tapped. However, check for upper bound.
         if (activeStep < upperBound) {
           setState(() {
@@ -161,6 +152,12 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
       },
       child: const Text('Atras'),
     );
+  }
+
+  bool _isSaveButtonEnabled() {
+    // final completeProfileForm = Provider.of<CompleteProfileProvider>(context);
+    // return completeProfileForm.isValidForm();
+    return true;
   }
 
   /// Returns the header wrapping the header text.
@@ -210,8 +207,10 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
     final authService = Provider.of<AuthService>(context, listen: false);
     final userProfileService = Provider.of<UserProfileService>(context, listen: false);
 
-    print("Debajo se vera si el formulario es valido o no");
+    print("CompliteProfileStatus");
     print(completeProfileForm.isValidForm());
+    // if (!completeProfileForm.isValidForm()) return;
+    completeProfileForm.isLoading = true;
 
     final Map<String, dynamic> userProfileData = {
       'firstName': completeProfileForm.firstName,
@@ -226,7 +225,6 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
       'userId': authService.userDto!.id,
       'activeProfile': true
     };
-
     File profilePhoto = completeProfileForm.profilePhoto!;
 
     UserProfileDto? userProfileDto = 
@@ -241,9 +239,9 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
         'Bienvenido por primera vez a la aplicacion ${userProfileDto.firstName}', 
         null
       );
-      return;
     } 
-    // Navigator.pushReplacementNamed(context, 'complete-profile');
+    completeProfileForm.isLoading = false;
+    // // Navigator.pushReplacementNamed(context, 'complete-profile');
   }
 
 }

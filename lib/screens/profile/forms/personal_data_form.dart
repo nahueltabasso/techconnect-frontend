@@ -89,6 +89,7 @@ class _PersonalDataFormState extends State<PersonalDataForm> {
                   labelText: 'Nombre',
                   prefixIcon: Icons.person_add_alt_1
                 ),
+                initialValue: completeProfileForm.firstName,
                 onChanged: (value) => completeProfileForm.firstName = value,
                 validator: (value) {
                   if (value != null && value.length > 0) return null;
@@ -110,6 +111,7 @@ class _PersonalDataFormState extends State<PersonalDataForm> {
                   labelText: 'Apellido',
                   prefixIcon: Icons.person_add_alt_1
                 ),
+                initialValue: completeProfileForm.lastName,
                 onChanged: (value) => completeProfileForm.lastName = value,
                 validator: (value) {
                   if (value != null && value.length > 0) return null;
@@ -150,6 +152,7 @@ class _PersonalDataFormState extends State<PersonalDataForm> {
                   hintText: '+54 444444',
                   prefixIcon: Icons.phone
                 ),
+                initialValue: completeProfileForm.phoneNumber,
                 onChanged: (value) => completeProfileForm.phoneNumber = value,
                 validator: (value) {
                   if (value != null && value.length > 0) return null;
@@ -171,6 +174,7 @@ class _PersonalDataFormState extends State<PersonalDataForm> {
                   hintText: '01/01/2000',
                   prefixIcon: Icons.calendar_today
                 ),
+                // initialValue: completeProfileForm.birthDate,
                 readOnly: true,
                 onTap: () {
                   _selectBirthDate();
@@ -190,7 +194,7 @@ class _PersonalDataFormState extends State<PersonalDataForm> {
                   labelText: "Estado Sentimental",
                   prefixIcon: Icons.sentiment_satisfied_alt_outlined
                 ),
-                value: 'Soltero/a',
+                value: completeProfileForm.personalStatus,
                 items: const [
                   DropdownMenuItem(child: Text("Soltero/a"), value: "Soltero/a"),
                   DropdownMenuItem(child: Text("Casado/a"), value: "Casado/a"),
