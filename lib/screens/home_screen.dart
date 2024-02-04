@@ -14,17 +14,29 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightBlue,
-        leading: IconButton(
-          icon: const Icon(Icons.login_outlined),
-          color: Colors.black,
-          onPressed: () {
-            authService.signOut();
-            Navigator.pushReplacementNamed(context, 'login');
-          },
-        ),
+        // leading: IconButton(
+        //   icon: const Icon(Icons.login_outlined),
+        //   color: Colors.black,
+        //   onPressed: () {
+        //     authService.signOut();
+        //     Navigator.pushReplacementNamed(context, 'login');
+        //   },
+        // ),
       ),
-      body: const Center(
-         child: Text('HomeScreen'),
+      body: Center(
+        child: Column(
+          children: [
+            const Text('HomeScreen'),
+            const SizedBox(height: 20),
+            TextButton(
+              child: const Text('Salir'),
+              onPressed: () {
+                authService.signOut();
+                Navigator.pushReplacementNamed(context, 'login');
+              },
+            )
+          ],
+        ),
       ),
     );
   }
