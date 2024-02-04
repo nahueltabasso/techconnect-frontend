@@ -28,6 +28,41 @@ class _PersonalDataFormState extends State<PersonalDataForm> {
     widget.completeProfileForm.email = widget.email;
   }
 
+    Future<void> _selectBirthDate() async {
+    DateTime? _picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate:  DateTime.now(),
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.dark().copyWith(
+            colorScheme: const ColorScheme.dark(
+                primary: Colors.lightBlue,
+                onPrimary: Colors.white,
+                surface: Colors.white,
+                onSurface: Colors.black,
+                ),
+            dialogBackgroundColor:Colors.blue[900],
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (_picked != null) {
+      // ignore: use_build_context_synchronously
+      final completeProfileForm = Provider.of<CompleteProfileProvider>(context, listen: false);
+      String formattedDate = DateFormat('yyyy-MM-ddTHH:mm:ss').format(_picked);
+      formattedDate = formattedDate.replaceFirst('T', ' ');
+      DateTime dateTime = DateTime.parse(formattedDate);
+      completeProfileForm.birthDate = dateTime;
+      setState(() {
+        _dateController.text = _picked.toString().split(" ")[0].toString();
+      });
+     }
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -172,38 +207,5 @@ class _PersonalDataFormState extends State<PersonalDataForm> {
     );
   }
 
-  Future<void> _selectBirthDate() async {
-    DateTime? _picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate:  DateTime.now(),
-      builder: (context, child) {
-        return Theme(
-          data: ThemeData.dark().copyWith(
-            colorScheme: const ColorScheme.dark(
-                primary: Colors.lightBlue,
-                onPrimary: Colors.white,
-                surface: Colors.white,
-                onSurface: Colors.black,
-                ),
-            dialogBackgroundColor:Colors.blue[900],
-          ),
-          child: child!,
-        );
-      },
-    );
 
-    if (_picked != null) {
-      // ignore: use_build_context_synchronously
-      final completeProfileForm = Provider.of<CompleteProfileProvider>(context, listen: false);
-      String formattedDate = DateFormat('yyyy-MM-ddTHH:mm:ss').format(_picked);
-      formattedDate = formattedDate.replaceFirst('T', ' ');
-      DateTime dateTime = DateTime.parse(formattedDate);
-      completeProfileForm.birthDate = dateTime;
-      setState(() {
-        _dateController.text = _picked.toString().split(" ")[0].toString();
-      });
-     }
-  }
 }
