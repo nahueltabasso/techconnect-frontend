@@ -123,6 +123,17 @@ class AuthService extends ChangeNotifier {
   }
 
   Future<String> isAuthenticated() async {
-    return await storage.read(key: "accessToken") ?? '';
+    final token = await storage.read(key: "accessToken");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    final url = Uri.parse('http://$_baseUrl/api/security/auth/validate?token=$token');
+    final response = await http.post(url, headers: headers, );
+    if (response.statusCode == 200) {
+      return token!;
+    }
+    await signOut();
+    return '';
   }
 }
