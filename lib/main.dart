@@ -8,7 +8,8 @@ import 'package:techconnect_frontend/screens/auth/login_screen.dart';
 import 'package:techconnect_frontend/screens/auth/register_user_screen.dart';
 import 'package:techconnect_frontend/screens/auth/reset_password_screen.dart';
 import 'package:techconnect_frontend/screens/home_screen.dart';
-import 'package:techconnect_frontend/screens/profile/complete_profile.dart';
+import 'package:techconnect_frontend/screens/profile/add_location_screen.dart';
+import 'package:techconnect_frontend/screens/profile/complete_profile_screen.dart';
 import 'package:techconnect_frontend/services/auth_service.dart';
 import 'package:techconnect_frontend/services/notification_service.dart';
 import 'package:techconnect_frontend/services/user_profile_servide.dart';
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
         'forgot-password': (context) => const ForgotPasswordScreen(),
         'reset-password': (context) => const ResetPasswordScreen(),
         'complete-profile': (context) => const CompleteProfileScreen(),
+        'add-location': (context) => const AddLocationScreen(),
         'home':(context) => const HomeScreen(),
       },
       scaffoldMessengerKey: NotificationService.messengerKey,
@@ -62,4 +64,5 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+
 }
