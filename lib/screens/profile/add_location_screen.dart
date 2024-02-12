@@ -42,21 +42,82 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
 
   void _addLocation(LatLng position) {
     print(position);
+    // print('longitud del set')
+    var flag = _markers.length == 0 ? true : false;
+    print('VALOR DE FLAG $flag');
     _markers.add(
       Marker(
         markerId: MarkerId(position.toString()),
         position: position,
         icon: icon,
         infoWindow: InfoWindow(title: DateFormat('dd/MM/yyyy hh:mm a').format(DateTime.now())),
+        onTap: () => _removeLocation(position),
       )
     );
     moveCamera(position);
+    if (flag) {
+      _saveUserLocation();
+    }
     setState(() {});
+  }
+
+  void _removeLocation(LatLng position) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          icon: const Icon(Icons.delete, color: Colors.red, size: 50),
+          title: const Center(child: Text('Eliminar ubicacion')),
+          content: const Text('Esta seguro de que desea eliminar esta ubicacion?'),
+          actions: [
+            TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancelar')),
+            TextButton(
+              child: const Text('Eliminar'),
+              onPressed: () {
+                setState(() {
+                  _markers.removeWhere((element) => element.position == position);
+                });
+                Navigator.of(context).pop();
+                // If the size of _markers set is equal to 1 call the function to save location
+                if (_markers.length == 1) {
+                  _saveUserLocation();
+                }
+              },
+            )
+          ],
+        );
+      },
+    );
   }
 
   Future<void> moveCamera(LatLng position) async {
     // final controller = await googleMapController.future;
     _controller?.animateCamera(CameraUpdate.newLatLng(position));
+  }
+
+  Future<void> _saveUserLocation() async {
+    var position = _markers.first.position;
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog.adaptive(
+          icon: const Icon(Icons.question_answer, color: Colors.lightBlue, size: 50,),
+          title: const Center(child: Text('Guardar ubicacion')),
+          content: const Text('Desea guardar esta ubicacion para su perfil?'),
+          actions: [
+            TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancelar')),
+
+            TextButton(
+              child: const Text('Guardar'),
+              onPressed: () {
+                // COMPLETAR EL BODY O LLAMAR AL SERVICIO
+                print(position);                
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -77,6 +138,7 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
               onTap: (LatLng position) {
                 _addLocation(position);
               },
+              onLongPress: (LatLng position) => _removeLocation(position),
             ),
         
             Padding(
