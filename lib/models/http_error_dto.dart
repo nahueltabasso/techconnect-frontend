@@ -1,18 +1,18 @@
 import 'dart:convert';
 
 class HttpErrorDto {
-    int httpStatus;
-    DateTime timestamp;
-    String errorCode;
+    int? httpStatus;
+    DateTime? timestamp;
+    String? errorCode;
     String message;
-    String description;
+    String? description;
 
     HttpErrorDto({
-        required this.httpStatus,
-        required this.timestamp,
-        required this.errorCode,
-        required this.message,
-        required this.description,
+      this.httpStatus,
+      this.timestamp,
+      this.errorCode,
+      required this.message,
+      this.description,
     });
 
     factory HttpErrorDto.fromRawJson(String str) => HttpErrorDto.fromJson(json.decode(str));
@@ -29,7 +29,7 @@ class HttpErrorDto {
 
     Map<String, dynamic> toJson() => {
         "httpStatus": httpStatus,
-        "timestamp": timestamp.toIso8601String(),
+        "timestamp": timestamp!.toIso8601String(),
         "errorCode": errorCode,
         "message": message,
         "description": description,

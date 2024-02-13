@@ -70,12 +70,12 @@ class UserProfileService extends ChangeNotifier {
     // To do this use a Nominatim from OSM(Open Street Map) that is a open source
     // map library that offer a free geocoding APIs
     String url = "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=$lat&lon=$long";
-    print(url);
     final geoResponse = await http.get(Uri.parse(url));
     if (geoResponse.statusCode == 200) {
       Map<String, dynamic> responseData = json.decode(geoResponse.body);
       // Stay with address object from responseData
       responseData = responseData["address"];
+      // Build request body
       Map<String, dynamic> userProfileMap = {"id": loggedUserProfile!.id, "userId": loggedUserProfile!.userId};
       Map<String, dynamic> body = {
         "id": null,
@@ -83,23 +83,21 @@ class UserProfileService extends ChangeNotifier {
         "state": responseData["state"] ?? 'Provincia no revelada',
         "country": responseData["country"] ?? 'Pais no revelado',
         "postalCode": responseData["postcode"],
-        "address": responseData["road"] + " " + responseData["house_number"] ?? '',
+        "address": responseData["road"] ?? 'Calle' + " " + responseData["house_number"] ?? '',
         "latitude": position.latitude,
         "longitude": position.longitude,
         "userProfileDTO": userProfileMap,
         // coordinate: null
       };
-      print(body);
+      // Request headers
       Map<String, String> headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ${await storage.read(key: 'accessToken')}'
       };
       String bodyStr = json.encode(body);
-      print('json $bodyStr');
       final url = Uri.http(_baseUrl, '/api/users/location');
       final response = await http.post(url, headers: headers, body: bodyStr);
       if (response.statusCode == 201) {
-        print('Response body location --- ${response.body}');
         var locationDto = LocationDto.fromRawJson(response.body);
         return locationDto;
       }

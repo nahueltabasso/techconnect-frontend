@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
+
 class UserProfileDto {
   
     int? id;
@@ -59,7 +61,7 @@ class UserProfileDto {
         "email": email,
         "phoneNumber": phoneNumber,
         "profilePhoto": profilePhoto,
-        "birthDate": birthDate.toIso8601String(),
+        "birthDate": DateFormat('yyyy-MM-ddTHH:mm:ss').format(birthDate),
         "verifiedProfile": verifiedProfile,
         "personalStatus": personalStatus,
         "studies": studies,

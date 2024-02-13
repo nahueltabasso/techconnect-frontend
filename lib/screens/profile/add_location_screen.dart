@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -30,11 +32,11 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
     _controller = controller;
   }
 
-  // @override
-  // void dispose() {
-  //   _controller?.dispose();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
 
   void _onMapTypeChange() {
     setState(() {
@@ -72,8 +74,17 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
           title: const Center(child: Text('Eliminar ubicacion')),
           content: const Text('Esta seguro de que desea eliminar esta ubicacion?'),
           actions: [
-            TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancelar')),
             TextButton(
+              onPressed: () => Navigator.of(context).pop(), 
+              child: const Text('Cancelar'),
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.lightBlue
+              ),
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.lightBlue
+              ),
               child: const Text('Eliminar'),
               onPressed: () {
                 setState(() {
@@ -99,25 +110,46 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
 
   Future<void> _saveUserLocation() async {
     var position = _markers.first.position;
+    bool isLoading = false;
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog.adaptive(
           icon: const Icon(Icons.question_answer, color: Colors.lightBlue, size: 50,),
           title: const Center(child: Text('Guardar ubicacion')),
-          content: const Text('Desea guardar esta ubicacion para su perfil?'),
+          content: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : const Text('Desea guardar esta ubicacion para su perfil?'),
           actions: [
-            TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancelar')),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(), 
+              child: const Text('Cancelar'), 
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.lightBlue
+              )
+            ),
 
             TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.lightBlue
+              ),
               child: const Text('Guardar'),
-              onPressed: () async {
+              onPressed: isLoading 
+              ? null  // Disabled button while the location is saving
+              : () async {
                 // Navigator.pop(context, 'add-location');
+                // setState(() {
+                //   isLoading = true;
+                // });
+                await Future.delayed(const Duration(milliseconds: 3000));
+
                 final userProfileService = Provider.of<UserProfileService>(context, listen: false);
                 LocationDto? locationDto = await userProfileService.saveUserLocation(context, position);
                 if (locationDto != null) {
+                  // setState(() {
+                  //   isLoading = false;
+                  // });
                   Navigator.pushReplacementNamed(context, 'home');
-                  // ignore: use_build_context_synchronously
                   NotificationService.showInfoDialogAlert(
                     context,
                     'Bienvenido',
