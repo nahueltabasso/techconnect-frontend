@@ -66,7 +66,7 @@ class NotificationService {
     );
   }
 
-    static showInfoDialogAlert(BuildContext context, String title, String message, String? route) async {
+  static showInfoDialogAlert(BuildContext context, String title, String message, String? route) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: true,

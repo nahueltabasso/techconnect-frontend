@@ -1,9 +1,12 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:techconnect_frontend/models/location_dto.dart';
+import 'package:techconnect_frontend/services/notification_service.dart';
+import 'package:techconnect_frontend/services/user_profile_servide.dart';
 
 class AddLocationScreen extends StatefulWidget {
   const AddLocationScreen({super.key});
@@ -14,7 +17,6 @@ class AddLocationScreen extends StatefulWidget {
 
 class _AddLocationScreenState extends State<AddLocationScreen> {
   
-  static const LatLng _center = const LatLng(37.4234, -122.6848);
   GoogleMapController? _controller;
   MapType _currentMapType = MapType.normal;
   Set<Marker> _markers = {};
@@ -28,11 +30,11 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
     _controller = controller;
   }
 
-  @override
-  void dispose() {
-    _controller?.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _controller?.dispose();
+  //   super.dispose();
+  // }
 
   void _onMapTypeChange() {
     setState(() {
@@ -109,9 +111,20 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
 
             TextButton(
               child: const Text('Guardar'),
-              onPressed: () {
-                // COMPLETAR EL BODY O LLAMAR AL SERVICIO
-                print(position);                
+              onPressed: () async {
+                // Navigator.pop(context, 'add-location');
+                final userProfileService = Provider.of<UserProfileService>(context, listen: false);
+                LocationDto? locationDto = await userProfileService.saveUserLocation(context, position);
+                if (locationDto != null) {
+                  Navigator.pushReplacementNamed(context, 'home');
+                  // ignore: use_build_context_synchronously
+                  NotificationService.showInfoDialogAlert(
+                    context,
+                    'Bienvenido',
+                    'Hola ${locationDto.userProfileDTO.firstName}, ahora puedes usar la aplicacion',
+                    null
+                  );
+                }
               },
             ),
           ],

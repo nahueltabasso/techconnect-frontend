@@ -16,5 +16,5 @@ class CommonConstant {
   static String RESET_PASSWORD_SUCCESS_SCEEN = "La contraseña se ha modificado correctamente!";
   static String FIRST_NAME_ERROR = "El nombre no puede estar vacio!";
   static String LAST_NAME_ERROR = "El apellido no puede estar vacio!";
-
+  static String LOCATION_NOT_VALID = "La ubicacion seleccionada no es valida! Por favor elige otra";
 }
