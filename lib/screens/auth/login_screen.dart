@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:techconnect_frontend/models/user_dto.dart';
 import 'package:techconnect_frontend/providers/login_form_provider.dart';
+import 'package:techconnect_frontend/screens/home_screen.dart';
+import 'package:techconnect_frontend/screens/profile/complete_profile_screen.dart';
 import 'package:techconnect_frontend/services/auth_service.dart';
 import 'package:techconnect_frontend/services/notification_service.dart';
 import 'package:techconnect_frontend/ui/input_decorations.dart';
 import 'package:techconnect_frontend/utils/constants.dart';
+import 'package:techconnect_frontend/utils/custom_page_route.dart';
 import 'package:techconnect_frontend/widgets/auth_background.dart';
 import 'package:techconnect_frontend/widgets/card_container.dart';
 
@@ -69,14 +72,15 @@ class _LoginForm extends StatelessWidget {
     print(response);
     if (response == null) {
       final UserDto? loginUser = authService.userDto;
-      final String screen = loginUser!.firstLogin ? 'complete-profile':'home';
-      // final String screen = loginUser!.firstLogin ? 'add-location':'add-location';
+      // final String screen = loginUser!.firstLogin ? 'complete-profile':'home';
+      final Widget screen = loginUser!.firstLogin ? const CompleteProfileScreen() : const HomeScreen();
 
-      Navigator.pushReplacementNamed(context, screen);
+      // Navigator.pushReplacementNamed(context, screen);
+      Navigator.of(context).push(CustomPageRouter(child: screen));
+      await Future.delayed(const Duration(milliseconds: 1000));
       NotificationService.showSuccessDialogAlert(context, 'Bienvenido', CommonConstant.LOGIN_SUCCESS_MESSAGE, null);
     } else {
       // TODO: Show error message
-      // NotificationService.showSnackbar(response);
       // ignore: use_build_context_synchronously
       NotificationService.showErrorDialogAlert(context, response);
     }

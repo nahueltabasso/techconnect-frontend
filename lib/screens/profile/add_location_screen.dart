@@ -7,8 +7,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:techconnect_frontend/models/location_dto.dart';
+import 'package:techconnect_frontend/screens/home_screen.dart';
 import 'package:techconnect_frontend/services/notification_service.dart';
 import 'package:techconnect_frontend/services/user_profile_servide.dart';
+import 'package:techconnect_frontend/utils/custom_page_route.dart';
 
 class AddLocationScreen extends StatefulWidget {
   const AddLocationScreen({super.key});
@@ -149,7 +151,8 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
                   // setState(() {
                   //   isLoading = false;
                   // });
-                  Navigator.pushReplacementNamed(context, 'home');
+                  Navigator.of(context).push(CustomPageRouter(child: const HomeScreen()));
+                  await Future.delayed(const Duration(milliseconds: 700));
                   NotificationService.showInfoDialogAlert(
                     context,
                     'Bienvenido',
@@ -170,6 +173,7 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text('Selecciona tu ubicacion')),
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.lightBlue,
       ),
       body: SafeArea(

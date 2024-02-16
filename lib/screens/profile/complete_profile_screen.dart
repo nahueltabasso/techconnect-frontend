@@ -4,12 +4,14 @@ import 'package:im_stepper/stepper.dart';
 import 'package:provider/provider.dart';
 import 'package:techconnect_frontend/models/user_profile_dto.dart';
 import 'package:techconnect_frontend/providers/complete_profile_provider.dart';
+import 'package:techconnect_frontend/screens/profile/add_location_screen.dart';
 import 'package:techconnect_frontend/screens/profile/forms/personal_data_form.dart';
 import 'package:techconnect_frontend/screens/profile/forms/study_hobby_form.dart';
 import 'package:techconnect_frontend/screens/profile/forms/upload_profile_photo_form.dart';
 import 'package:techconnect_frontend/services/auth_service.dart';
 import 'package:techconnect_frontend/services/notification_service.dart';
 import 'package:techconnect_frontend/services/user_profile_servide.dart';
+import 'package:techconnect_frontend/utils/custom_page_route.dart';
 
 class CompleteProfileScreen extends StatefulWidget {
    
@@ -35,6 +37,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text('Completa tu Perfil')),
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.lightBlue,
       ),
       body: Padding(
@@ -234,7 +237,9 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                   await userProfileService.saveProfile(userProfileData, profilePhoto, context);
 
     if (userProfileDto != null) {
-      Navigator.pushReplacementNamed(context, 'add-location');
+      // Navigator.pushReplacementNamed(context, 'add-location');
+      Navigator.of(context).push(CustomPageRouter(child: const AddLocationScreen()));
+      await Future.delayed(const Duration(milliseconds: 1000));
       // ignore: use_build_context_synchronously
       NotificationService.showInfoDialogAlert(
         context,
