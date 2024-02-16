@@ -76,7 +76,7 @@ class _LoginForm extends StatelessWidget {
       final Widget screen = loginUser!.firstLogin ? const CompleteProfileScreen() : const HomeScreen();
 
       // Navigator.pushReplacementNamed(context, screen);
-      Navigator.of(context).push(CustomPageRouter(child: screen));
+      Navigator.of(context).push(CustomPageRouter(child: screen, typeTransition: 2, axisDirection: AxisDirection.right));
       await Future.delayed(const Duration(milliseconds: 1000));
       NotificationService.showSuccessDialogAlert(context, 'Bienvenido', CommonConstant.LOGIN_SUCCESS_MESSAGE, null);
     } else {

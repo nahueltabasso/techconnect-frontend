@@ -151,7 +151,7 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
                   // setState(() {
                   //   isLoading = false;
                   // });
-                  Navigator.of(context).push(CustomPageRouter(child: const HomeScreen()));
+                  Navigator.of(context).push(CustomPageRouter(child: const HomeScreen(), typeTransition: 2, axisDirection: AxisDirection.right));
                   await Future.delayed(const Duration(milliseconds: 700));
                   NotificationService.showInfoDialogAlert(
                     context,

@@ -14,6 +14,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightBlue,
+        automaticallyImplyLeading: false,
         // leading: IconButton(
         //   icon: const Icon(Icons.login_outlined),
         //   color: Colors.black,

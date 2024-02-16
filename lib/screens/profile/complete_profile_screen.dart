@@ -238,7 +238,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
 
     if (userProfileDto != null) {
       // Navigator.pushReplacementNamed(context, 'add-location');
-      Navigator.of(context).push(CustomPageRouter(child: const AddLocationScreen()));
+      Navigator.of(context).push(CustomPageRouter(child: const AddLocationScreen(), typeTransition: 2, axisDirection: AxisDirection.right));
       await Future.delayed(const Duration(milliseconds: 1000));
       // ignore: use_build_context_synchronously
       NotificationService.showInfoDialogAlert(
