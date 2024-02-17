@@ -47,17 +47,17 @@ class _UploadProfilePhotoFormState extends State<UploadProfilePhotoForm> {
         const SizedBox(height: 20),
         ElevatedButton(
           onPressed: () => _pickImage(ImageSource.gallery),
-          child: const Text('Abrir galería', style: TextStyle(color: Colors.black)),
           style: const ButtonStyle(
             backgroundColor: MaterialStatePropertyAll<Color>(Colors.lightBlue),
           ),
+          child: const Text('Abrir galería', style: TextStyle(color: Colors.black)),
         ),
         ElevatedButton(
           onPressed: () => _pickImage(ImageSource.camera),
-          child: const Text('Abrir Camara',style: TextStyle(color: Colors.black)),
           style: const ButtonStyle(
             backgroundColor: MaterialStatePropertyAll<Color>(Colors.lightBlue)
           ),
+          child: const Text('Abrir Camara',style: TextStyle(color: Colors.black)),
         ),
       ],
     );

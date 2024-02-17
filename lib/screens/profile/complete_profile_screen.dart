@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +9,6 @@ import 'package:techconnect_frontend/screens/profile/forms/study_hobby_form.dart
 import 'package:techconnect_frontend/screens/profile/forms/upload_profile_photo_form.dart';
 import 'package:techconnect_frontend/services/auth_service.dart';
 import 'package:techconnect_frontend/services/notification_service.dart';
-import 'package:techconnect_frontend/services/user_profile_servide.dart';
 import 'package:techconnect_frontend/shared/custom_page_route.dart';
 
 class CompleteProfileScreen extends StatefulWidget {
@@ -50,7 +48,6 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                   Icon(Icons.person_4_rounded),
                   Icon(Icons.school_outlined),
                   Icon(Icons.photo_camera),
-                  // Icon(Icons.location_city)
                 ],
                 // ActiveStep property set to activeStep variable defined above
                 activeStep: activeStep,
@@ -88,7 +85,6 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                    // StudyHobbyForm(completeProfileForm: completeProfileForm)
                   ],
                   onPageChanged: (value) {
-                    print('Active step $activeStep');
                     setState(() {
                       activeStep = value;
                     });
@@ -104,7 +100,6 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                     nextButton()
                   else if (activeStep == upperBound) // Show only in the last step
                     submitButton(context, completeProfileForm)
-                  // nextButton()
                 ],
               )
             ],
@@ -119,7 +114,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
       style: const ButtonStyle(
         backgroundColor: MaterialStatePropertyAll<Color>(Colors.lightBlue),
       ),
-      onPressed: _isSaveButtonEnabled() ? () => saveNewProfile(completeProfileForm, context) : null,
+      onPressed: _isSaveButtonEnabled() ? () => _saveNewProfile(completeProfileForm, context) : null,
       child: const Text('Guardar', style: TextStyle(color: Colors.black),),
     );
   }
@@ -131,7 +126,6 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
         backgroundColor: MaterialStatePropertyAll<Color>(Colors.lightBlue),
       ),
       onPressed: () {
-        print("Current activeStep: $activeStep");
         // Increment activeStep, when the next button is tapped. However, check for upper bound.
         if (activeStep < upperBound) {
           setState(() {
@@ -209,33 +203,13 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
     }
   }
 
-  Future<void> saveNewProfile(CompleteProfileProvider completeProfileForm, BuildContext context) async {
-    final authService = Provider.of<AuthService>(context, listen: false);
-    final userProfileService = Provider.of<UserProfileService>(context, listen: false);
-
-    print("CompliteProfileStatus");
-    print(completeProfileForm.isValidForm());
-    // if (!completeProfileForm.isValidForm()) return;
-    completeProfileForm.isLoading = true;
-
-    final Map<String, dynamic> userProfileData = {
-      'firstName': completeProfileForm.firstName,
-      'lastName': completeProfileForm.lastName,
-      'email': completeProfileForm.email,
-      'phoneNumber': completeProfileForm.phoneNumber,
-      'birthDate': completeProfileForm.birthDate.toString(),
-      'verifiedProfile': false,
-      'personalStatus': completeProfileForm.personalStatus,
-      'studies': completeProfileForm.studies,
-      'biography': completeProfileForm.biography,
-      'userId': authService.userDto!.id,
-      'activeProfile': true
-    };
-    File profilePhoto = completeProfileForm.profilePhoto!;
-
-    UserProfileDto? userProfileDto = 
-                  await userProfileService.saveProfile(userProfileData, profilePhoto, context);
-
+  Future<void> _saveNewProfile(CompleteProfileProvider completeProfileForm, BuildContext context) async {
+    bool formValid = context.read<CompleteProfileProvider>().isValidForm();
+    // if (!formValid) return;
+    if (completeProfileForm.profilePhoto == null) {
+      NotificationService.showErrorDialogAlert(context, 'Debe elegir una foto de perfil');
+    }
+    UserProfileDto? userProfileDto = await context.read<CompleteProfileProvider>().saveProfile();
     if (userProfileDto != null) {
       // Navigator.pushReplacementNamed(context, 'add-location');
       Navigator.of(context).push(CustomPageRouter(child: const AddLocationScreen(), typeTransition: 2, axisDirection: AxisDirection.right));
@@ -248,7 +222,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
         null
       );
     } 
-    completeProfileForm.isLoading = false;
+    // completeProfileForm.isLoading = false;
     // // Navigator.pushReplacementNamed(context, 'complete-profile');
   }
 

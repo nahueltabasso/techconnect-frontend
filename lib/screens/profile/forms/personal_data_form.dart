@@ -28,12 +28,10 @@ class _PersonalDataFormState extends State<PersonalDataForm> {
     widget.completeProfileForm.email = widget.email;
   }
 
-    Future<void> _selectBirthDate() async {
+  Future<void> _selectBirthDate() async {
     DateTime? _picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate:  DateTime.now(),
+      initialDate: DateTime.now(), firstDate: DateTime(1900), lastDate: DateTime.now(),
       builder: (context, child) {
         return Theme(
           data: ThemeData.dark().copyWith(
@@ -196,10 +194,10 @@ class _PersonalDataFormState extends State<PersonalDataForm> {
                 ),
                 value: completeProfileForm.personalStatus,
                 items: const [
-                  DropdownMenuItem(child: Text("Soltero/a"), value: "Soltero/a"),
-                  DropdownMenuItem(child: Text("Casado/a"), value: "Casado/a"),
-                  DropdownMenuItem(child: Text("Novio/a"), value: "Novio/a"),
-                  DropdownMenuItem(child: Text("En una relacion"), value: "En una relacion"),
+                  DropdownMenuItem(value: "Soltero/a", child: Text("Soltero/a")),
+                  DropdownMenuItem(value: "Casado/a", child: Text("Casado/a")),
+                  DropdownMenuItem(value: "Novio/a", child: Text("Novio/a")),
+                  DropdownMenuItem(value: "En una relacion", child: Text("En una relacion")),
                 ],
                 onChanged: (value) => completeProfileForm.personalStatus = value!,
               ),
