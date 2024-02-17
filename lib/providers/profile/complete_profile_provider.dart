@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:techconnect_frontend/models/location_dto.dart';
 import 'package:techconnect_frontend/models/user_profile_dto.dart';
 import 'package:techconnect_frontend/services/auth_service.dart';
 import 'package:techconnect_frontend/services/context_service.dart';
@@ -66,5 +68,14 @@ class CompleteProfileProvider extends ChangeNotifier {
     }
     isLoading = false;
     return null;
+  }
+
+  Future<LocationDto?> saveUserLocation(LatLng position) async {
+    BuildContext? context = ContextService().context!;
+    final userProfileService = Provider.of<UserProfileService>(context, listen: false);
+    isLoading = true;
+    LocationDto? locationDto = await userProfileService.saveUserLocation(context, position);
+    isLoading = false;
+    return locationDto;
   }
 }

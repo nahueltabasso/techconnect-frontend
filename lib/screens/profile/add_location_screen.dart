@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:techconnect_frontend/models/location_dto.dart';
+import 'package:techconnect_frontend/providers/profile/complete_profile_provider.dart';
 import 'package:techconnect_frontend/screens/home_screen.dart';
 import 'package:techconnect_frontend/services/notification_service.dart';
 import 'package:techconnect_frontend/services/user_profile_servide.dart';
@@ -112,45 +113,36 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
 
   Future<void> _saveUserLocation() async {
     var position = _markers.first.position;
-    bool isLoading = false;
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog.adaptive(
           icon: const Icon(Icons.question_answer, color: Colors.lightBlue, size: 50,),
           title: const Center(child: Text('Guardar ubicacion')),
-          content: isLoading
+          content: context.read<CompleteProfileProvider>().isLoading
+            // ignore: dead_code
             ? const Center(child: CircularProgressIndicator())
             : const Text('Desea guardar esta ubicacion para su perfil?'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(), 
-              child: const Text('Cancelar'), 
               style: TextButton.styleFrom(
                 foregroundColor: Colors.lightBlue
-              )
+              ), 
+              child: const Text('Cancelar')
             ),
 
             TextButton(
               style: TextButton.styleFrom(
                 foregroundColor: Colors.lightBlue
               ),
-              child: const Text('Guardar'),
-              onPressed: isLoading 
+              onPressed: context.read<CompleteProfileProvider>().isLoading 
               ? null  // Disabled button while the location is saving
               : () async {
-                // Navigator.pop(context, 'add-location');
-                // setState(() {
-                //   isLoading = true;
-                // });
-                await Future.delayed(const Duration(milliseconds: 3000));
+                await Future.delayed(const Duration(milliseconds: 1000));
 
-                final userProfileService = Provider.of<UserProfileService>(context, listen: false);
-                LocationDto? locationDto = await userProfileService.saveUserLocation(context, position);
+                LocationDto? locationDto = await context.read<CompleteProfileProvider>().saveUserLocation(position);
                 if (locationDto != null) {
-                  // setState(() {
-                  //   isLoading = false;
-                  // });
                   Navigator.of(context).push(CustomPageRouter(child: const HomeScreen(), typeTransition: 2, axisDirection: AxisDirection.right));
                   await Future.delayed(const Duration(milliseconds: 700));
                   NotificationService.showInfoDialogAlert(
@@ -161,6 +153,7 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
                   );
                 }
               },
+              child: const Text('Guardar'),
             ),
           ],
         );

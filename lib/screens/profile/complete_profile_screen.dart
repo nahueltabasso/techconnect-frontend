@@ -221,8 +221,6 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
         null
       );
     } 
-    // completeProfileForm.isLoading = false;
-    // // Navigator.pushReplacementNamed(context, 'complete-profile');
   }
 
 }
