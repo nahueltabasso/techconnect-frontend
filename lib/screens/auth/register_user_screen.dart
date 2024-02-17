@@ -47,7 +47,10 @@ class RegisterUserScreen extends StatelessWidget {
                   shape: MaterialStateProperty.all(const StadiumBorder())
                 ),
                 child: const Text('Ya estas registrado?', style: TextStyle(fontSize: 22, color: Colors.lightBlue),),
-                onPressed: () => Navigator.pushReplacementNamed(context, 'login'),
+                // onPressed: () => Navigator.pushReplacementNamed(context, 'login'),
+                onPressed: () => Navigator.of(context).push(
+                  CustomPageRouter(child: const LoginScreen(), typeTransition: 2, axisDirection: AxisDirection.left)
+                ),
               )
             ],
           ),

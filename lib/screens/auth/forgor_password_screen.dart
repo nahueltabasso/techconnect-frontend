@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:techconnect_frontend/providers/auth/forgot_password_provider.dart';
+import 'package:techconnect_frontend/screens/auth/login_screen.dart';
+import 'package:techconnect_frontend/screens/auth/reset_password_screen.dart';
 import 'package:techconnect_frontend/services/auth_service.dart';
 import 'package:techconnect_frontend/services/notification_service.dart';
+import 'package:techconnect_frontend/shared/custom_page_route.dart';
 import 'package:techconnect_frontend/shared/input_decorations.dart';
 import 'package:techconnect_frontend/shared/constants.dart';
 import 'package:techconnect_frontend/widgets/auth_background.dart';
@@ -58,7 +61,10 @@ class ForgotPasswordScreen extends StatelessWidget {
                   shape: MaterialStateProperty.all(const StadiumBorder())
                 ),
                 child: const Text('Iniciar Sesion', style: TextStyle(fontSize: 22, color: Colors.lightBlue),),
-                onPressed: () => Navigator.pushReplacementNamed(context, 'login'),
+                // onPressed: () => Navigator.pushReplacementNamed(context, 'login'),
+                onPressed: () => Navigator.of(context).push(
+                  CustomPageRouter(child: const LoginScreen(), typeTransition: 2, axisDirection: AxisDirection.left)
+                ),
               )
 
             ],
@@ -80,7 +86,8 @@ class _ForgotPasswordForm extends StatelessWidget {
 
     final String? response = await context.read<ForgotPasswordProvider>().forgotPassword();
     if (response == null) {
-      Navigator.pushReplacementNamed(context, 'reset-password');
+      // Navigator.pushReplacementNamed(context, 'reset-password');
+      Navigator.of(context).push(CustomPageRouter(child: const ResetPasswordScreen(), typeTransition: 2, axisDirection: AxisDirection.up));
       NotificationService.showSuccessDialogAlert(context, 'Codigo Enviado', CommonConstant.FORGOT_PASSWORD_SUCCESS_LEGEND, null);
     } else {
       NotificationService.showErrorDialogAlert(context, response);

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:techconnect_frontend/models/user_dto.dart';
 import 'package:techconnect_frontend/providers/auth/login_form_provider.dart';
+import 'package:techconnect_frontend/screens/auth/forgor_password_screen.dart';
+import 'package:techconnect_frontend/screens/auth/register_user_screen.dart';
 import 'package:techconnect_frontend/screens/home_screen.dart';
 import 'package:techconnect_frontend/screens/profile/complete_profile_screen.dart';
 import 'package:techconnect_frontend/services/notification_service.dart';
@@ -51,7 +53,10 @@ class LoginScreen extends StatelessWidget {
                   shape: MaterialStateProperty.all(const StadiumBorder())
                 ),
                 child: const Text('Crear una nueva cuenta', style: TextStyle(fontSize: 22, color: Colors.lightBlue),),
-                onPressed: () => Navigator.pushReplacementNamed(context, 'register'),
+                // onPressed: () => Navigator.pushReplacementNamed(context, 'register'),
+                onPressed: () => Navigator.of(context).push(
+                  CustomPageRouter(child: const RegisterUserScreen(), typeTransition: 2, axisDirection: AxisDirection.right)
+                ),
               )
             ],
           ),
@@ -139,7 +144,10 @@ class _LoginForm extends StatelessWidget {
                   alignment: Alignment.bottomRight
                 ),
                 child: const Text('Olvidaste tu contraseña?', style: TextStyle(fontSize: 14, color: Colors.lightBlue),),
-                onPressed: () => Navigator.pushReplacementNamed(context, 'forgot-password'),
+                // onPressed: () => Navigator.pushReplacementNamed(context, 'forgot-password'),
+                onPressed: () => Navigator.of(context).push(
+                  CustomPageRouter(child: const ForgotPasswordScreen(), typeTransition: 2, axisDirection: AxisDirection.right)
+                ),
               ),
             ),
 

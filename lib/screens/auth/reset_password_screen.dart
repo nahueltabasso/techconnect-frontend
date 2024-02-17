@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:techconnect_frontend/providers/auth/forgot_password_provider.dart';
+import 'package:techconnect_frontend/screens/auth/login_screen.dart';
 import 'package:techconnect_frontend/services/auth_service.dart';
 import 'package:techconnect_frontend/services/notification_service.dart';
+import 'package:techconnect_frontend/shared/custom_page_route.dart';
 import 'package:techconnect_frontend/shared/input_decorations.dart';
 import 'package:techconnect_frontend/shared/constants.dart';
 import 'package:techconnect_frontend/widgets/auth_background.dart';
@@ -80,7 +82,8 @@ class _ResetPasswordForm extends StatelessWidget {
 
     final String? response = await context.read<ForgotPasswordProvider>().resetPassword();
     if (response == null) {
-      Navigator.pushReplacementNamed(context, 'login');
+      // Navigator.pushReplacementNamed(context, 'login')
+      Navigator.of(context).push(CustomPageRouter(child: const LoginScreen(), typeTransition: 2, axisDirection: AxisDirection.right));
       NotificationService.showSuccessDialogAlert(context, 'Contraseña Restablecida', CommonConstant.RESET_PASSWORD_SUCCESS_SCEEN, 'login');
     } else {
       NotificationService.showErrorDialogAlert(context, response);
