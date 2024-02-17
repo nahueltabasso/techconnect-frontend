@@ -11,7 +11,7 @@ import 'package:techconnect_frontend/screens/profile/forms/upload_profile_photo_
 import 'package:techconnect_frontend/services/auth_service.dart';
 import 'package:techconnect_frontend/services/notification_service.dart';
 import 'package:techconnect_frontend/services/user_profile_servide.dart';
-import 'package:techconnect_frontend/utils/custom_page_route.dart';
+import 'package:techconnect_frontend/shared/custom_page_route.dart';
 
 class CompleteProfileScreen extends StatefulWidget {
    

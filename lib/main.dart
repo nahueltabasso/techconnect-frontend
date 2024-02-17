@@ -11,6 +11,7 @@ import 'package:techconnect_frontend/screens/home_screen.dart';
 import 'package:techconnect_frontend/screens/profile/add_location_screen.dart';
 import 'package:techconnect_frontend/screens/profile/complete_profile_screen.dart';
 import 'package:techconnect_frontend/services/auth_service.dart';
+import 'package:techconnect_frontend/services/context_service.dart';
 import 'package:techconnect_frontend/services/notification_service.dart';
 import 'package:techconnect_frontend/services/user_profile_servide.dart';
 import 'package:techconnect_frontend/config/app_config.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print(AppConfig.API_URL);
+    ContextService().setContext(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'TechConnection',

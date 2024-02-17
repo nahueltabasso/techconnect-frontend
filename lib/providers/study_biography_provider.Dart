@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 
-class RegisterFormProvider extends ChangeNotifier {
+class StudyBiographyProvider extends ChangeNotifier {
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  String username = '';
-  String email = '';
-  String password = '';
-  String confirmPassword = '';
+  String studies = '';
+  String biography = '';
 
   bool _isLoading = false;
 
@@ -19,12 +17,7 @@ class RegisterFormProvider extends ChangeNotifier {
   }
 
   bool isValidForm() {
-    print(formKey.currentState?.validate());
-    print(username);
-    print(email);
-    print(password);
-    print(confirmPassword);
+    print("End valid form");
     return formKey.currentState?.validate() ?? false;
   }
-
 }

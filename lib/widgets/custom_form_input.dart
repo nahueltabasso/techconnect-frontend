@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:techconnect_frontend/ui/input_decorations.dart';
+import 'package:techconnect_frontend/shared/input_decorations.dart';
 
 class CustomFormInput extends StatelessWidget {
 

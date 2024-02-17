@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:techconnect_frontend/models/password_dto.dart';
-import 'package:techconnect_frontend/providers/forgot_password_provider.dart';
+import 'package:techconnect_frontend/providers/auth/forgot_password_provider.dart';
 import 'package:techconnect_frontend/services/auth_service.dart';
 import 'package:techconnect_frontend/services/notification_service.dart';
-import 'package:techconnect_frontend/ui/input_decorations.dart';
-import 'package:techconnect_frontend/utils/constants.dart';
+import 'package:techconnect_frontend/shared/input_decorations.dart';
+import 'package:techconnect_frontend/shared/constants.dart';
 import 'package:techconnect_frontend/widgets/auth_background.dart';
 import 'package:techconnect_frontend/widgets/card_container.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
+
+  static const String routeName = 'reset-password';
+
   const ResetPasswordScreen({super.key});
 
   @override
@@ -26,7 +28,7 @@ class ResetPasswordScreen extends StatelessWidget {
                   children: [
                     const SizedBox(height: 10,),
                     
-                    Text('Restablecer Contraseña', style: TextStyle(fontSize: 28,  )),
+                    const Text('Restablecer Contraseña', style: TextStyle(fontSize: 28,  )),
                     // Text('Restablecer Contraseña', style: Theme.of(context).textTheme.headlineSmall,),
 
                     const SizedBox(height: 15,),
@@ -73,21 +75,16 @@ class _ResetPasswordForm extends StatelessWidget {
   const _ResetPasswordForm({super.key});
 
   void _resetPassword(BuildContext context, AuthService authService, ForgotPasswordProvider forgotPasswordForm) async {
-    if (!forgotPasswordForm.isResetPasswordFormValid()) return;
-    forgotPasswordForm.isLoading = true;
+    bool formValid = context.read<ForgotPasswordProvider>().isResetPasswordFormValid();
+    if (!formValid) return;
 
-    final String code = forgotPasswordForm.code;
-    final String newPassword = forgotPasswordForm.newPassword;
-    final String confirmPassword = forgotPasswordForm.confirmPassword;
-    final passwordDTO = PasswordDTO(code: code, newPassword: newPassword, confirmPassword: confirmPassword);
-    final String? response = await authService.resetPassword(passwordDTO);
+    final String? response = await context.read<ForgotPasswordProvider>().resetPassword();
     if (response == null) {
       Navigator.pushReplacementNamed(context, 'login');
       NotificationService.showSuccessDialogAlert(context, 'Contraseña Restablecida', CommonConstant.RESET_PASSWORD_SUCCESS_SCEEN, 'login');
     } else {
       NotificationService.showErrorDialogAlert(context, response);
     }
-    forgotPasswordForm.isLoading = false;
   }
 
   @override

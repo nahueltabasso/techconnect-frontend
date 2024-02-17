@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:techconnect_frontend/models/new_user_dto.dart';
-import 'package:techconnect_frontend/providers/register_form_provider.dart';
-import 'package:techconnect_frontend/services/auth_service.dart';
+import 'package:techconnect_frontend/providers/auth/register_form_provider.dart';
+import 'package:techconnect_frontend/screens/auth/login_screen.dart';
 import 'package:techconnect_frontend/services/notification_service.dart';
-import 'package:techconnect_frontend/ui/input_decorations.dart';
-import 'package:techconnect_frontend/utils/constants.dart';
+import 'package:techconnect_frontend/shared/custom_page_route.dart';
+import 'package:techconnect_frontend/shared/input_decorations.dart';
+import 'package:techconnect_frontend/shared/constants.dart';
 import 'package:techconnect_frontend/widgets/auth_background.dart';
 import 'package:techconnect_frontend/widgets/card_container.dart';
 
 // ignore: must_be_immutable
 class RegisterUserScreen extends StatelessWidget {
+
+  static const String routeName = 'register';
    
   const RegisterUserScreen({Key? key}) : super(key: key);
   
@@ -58,36 +60,18 @@ class RegisterUserScreen extends StatelessWidget {
 class _RegisterForm extends StatelessWidget {
   const _RegisterForm({super.key});
 
-  void _registerUser(BuildContext context, RegisterFormProvider registerForm) async {
-    final authService = Provider.of<AuthService>(context, listen: false);
-
-    if (!registerForm.isValidForm()) return;
-    registerForm.isLoading = true;
-
-    final newUserDto = NewUserDto(
-      username: registerForm.username,
-      email: registerForm.email,
-      password: registerForm.password,
-      confirmPassword: registerForm.confirmPassword,
-      googleUser: false,
-      facebookUser: false,
-      appleUser: false,
-      firstLogin: false,
-      roles: null,
-      userLocked: false,
-      failsAttemps: 0
-    );
-
+  void _registerUser(BuildContext context) async {
+    bool formValid = context.read<RegisterFormProvider>().isValidForm();
+    if (!formValid) return;
     // TODO: Valid if the register is correct
-    final String? response = await authService.signUp(newUserDto);
+    final String? response = await context.read<RegisterFormProvider>().registerUser();
     if (response == null) {
-      Navigator.pushReplacementNamed(context, 'login');
+      Navigator.of(context).push(CustomPageRouter(child: const LoginScreen(), typeTransition: 2, axisDirection: AxisDirection.right));
       NotificationService.showSuccessDialogAlert(context, 'Registrado', CommonConstant.REGISTER_SUCCESS_MESSAGE, null);
     } 
     if (response != null && response != '') {
       NotificationService.showSnackbar(response);
     }
-    registerForm.isLoading = false;
   }
 
   @override
@@ -188,7 +172,7 @@ class _RegisterForm extends StatelessWidget {
               onPressed: registerForm.isLoading ? null : () async {
                 FocusScope.of(context).unfocus();
                 // TODO Login form (submit)
-                _registerUser(context, registerForm);
+                _registerUser(context);
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),

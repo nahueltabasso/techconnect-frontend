@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:techconnect_frontend/providers/forgot_password_provider.dart';
+import 'package:techconnect_frontend/providers/auth/forgot_password_provider.dart';
 import 'package:techconnect_frontend/services/auth_service.dart';
 import 'package:techconnect_frontend/services/notification_service.dart';
-import 'package:techconnect_frontend/ui/input_decorations.dart';
-import 'package:techconnect_frontend/utils/constants.dart';
+import 'package:techconnect_frontend/shared/input_decorations.dart';
+import 'package:techconnect_frontend/shared/constants.dart';
 import 'package:techconnect_frontend/widgets/auth_background.dart';
 import 'package:techconnect_frontend/widgets/card_container.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
+
+  static const String routeName = 'forgot-password';
+
   const ForgotPasswordScreen({super.key});
 
   @override
@@ -25,7 +28,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                   children: [
                     const SizedBox(height: 10,),
                     
-                    Text('Modificar contraseña', style: TextStyle(fontSize: 32,  )),
+                    const Text('Modificar contraseña', style: TextStyle(fontSize: 32,  )),
                     // Text('Modificar contraseña', style: Theme.of(context).textTheme.headlineSmall,),
 
                     const SizedBox(height: 15,),
@@ -72,18 +75,16 @@ class _ForgotPasswordForm extends StatelessWidget {
   const _ForgotPasswordForm({super.key});
 
   void _forgotPassword(BuildContext context, AuthService authService, ForgotPasswordProvider forgotPasswordForm) async {
-    print(forgotPasswordForm.email);
-    if (!forgotPasswordForm.isValidForm()) return;
-    forgotPasswordForm.isLoading = true;
+    bool formValid = context.read<ForgotPasswordProvider>().isValidForm();
+    if (!formValid) return;
 
-    final String? response = await authService.forgotPassword(forgotPasswordForm.email);
+    final String? response = await context.read<ForgotPasswordProvider>().forgotPassword();
     if (response == null) {
       Navigator.pushReplacementNamed(context, 'reset-password');
       NotificationService.showSuccessDialogAlert(context, 'Codigo Enviado', CommonConstant.FORGOT_PASSWORD_SUCCESS_LEGEND, null);
     } else {
       NotificationService.showErrorDialogAlert(context, response);
     }
-    forgotPasswordForm.isLoading = false;
   }
 
   @override

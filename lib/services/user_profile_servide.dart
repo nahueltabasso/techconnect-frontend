@@ -9,7 +9,7 @@ import 'package:techconnect_frontend/models/http_error_dto.dart';
 import 'package:techconnect_frontend/models/location_dto.dart';
 import 'package:techconnect_frontend/models/user_profile_dto.dart';
 import 'package:techconnect_frontend/services/notification_service.dart';
-import 'package:techconnect_frontend/utils/constants.dart';
+import 'package:techconnect_frontend/shared/constants.dart';
 
 
 class UserProfileService extends ChangeNotifier {

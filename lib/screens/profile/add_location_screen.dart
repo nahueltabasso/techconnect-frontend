@@ -10,7 +10,7 @@ import 'package:techconnect_frontend/models/location_dto.dart';
 import 'package:techconnect_frontend/screens/home_screen.dart';
 import 'package:techconnect_frontend/services/notification_service.dart';
 import 'package:techconnect_frontend/services/user_profile_servide.dart';
-import 'package:techconnect_frontend/utils/custom_page_route.dart';
+import 'package:techconnect_frontend/shared/custom_page_route.dart';
 
 class AddLocationScreen extends StatefulWidget {
   const AddLocationScreen({super.key});

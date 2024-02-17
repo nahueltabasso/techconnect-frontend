@@ -6,11 +6,11 @@ import 'package:techconnect_frontend/config/app_config.dart';
 import 'package:techconnect_frontend/models/new_user_dto.dart';
 import 'package:techconnect_frontend/models/password_dto.dart';
 import 'package:techconnect_frontend/models/user_dto.dart';
-import 'package:techconnect_frontend/utils/constants.dart';
+import 'package:techconnect_frontend/shared/constants.dart';
 
 class AuthService extends ChangeNotifier {
 
-  final String _baseUrl = AppConfig.API_URL;
+  static final String _baseUrl = AppConfig.API_URL;
   final storage = FlutterSecureStorage();
   UserDto? _userDto = null;
 
@@ -46,8 +46,8 @@ class AuthService extends ChangeNotifier {
     return null;
   }
 
+
   // Endpoint to Login
-  // Future<Map<String, dynamic>?> signIn(String username, String password) async {
   Future<String?> signIn(String username, String password) async {
     Map<String, String> headers = {
       'Content-Type': 'application/json',

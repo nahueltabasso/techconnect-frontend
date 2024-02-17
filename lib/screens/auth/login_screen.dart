@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:techconnect_frontend/models/user_dto.dart';
-import 'package:techconnect_frontend/providers/login_form_provider.dart';
+import 'package:techconnect_frontend/providers/auth/login_form_provider.dart';
 import 'package:techconnect_frontend/screens/home_screen.dart';
 import 'package:techconnect_frontend/screens/profile/complete_profile_screen.dart';
-import 'package:techconnect_frontend/services/auth_service.dart';
 import 'package:techconnect_frontend/services/notification_service.dart';
-import 'package:techconnect_frontend/ui/input_decorations.dart';
-import 'package:techconnect_frontend/utils/constants.dart';
-import 'package:techconnect_frontend/utils/custom_page_route.dart';
+import 'package:techconnect_frontend/shared/input_decorations.dart';
+import 'package:techconnect_frontend/shared/constants.dart';
+import 'package:techconnect_frontend/shared/custom_page_route.dart';
 import 'package:techconnect_frontend/widgets/auth_background.dart';
 import 'package:techconnect_frontend/widgets/card_container.dart';
 
 // ignore: must_be_immutable
 class LoginScreen extends StatelessWidget {
    
+  static const String routeName = 'login';
+
   const LoginScreen({Key? key}) : super(key: key);
   
   @override
@@ -63,35 +64,26 @@ class LoginScreen extends StatelessWidget {
 class _LoginForm extends StatelessWidget {
   const _LoginForm({super.key});
 
-  void _login(BuildContext context, LoginFormProvider loginForm, AuthService authService) async {
-    if (!loginForm.isValidForm()) return;
-    loginForm.isLoading = true;
-
-    // TODO: Valid if the login is correct
-    final String? response = await authService.signIn(loginForm.username, loginForm.password);
-    print(response);
+  void _login(BuildContext context) async {
+    bool formValid = context.read<LoginFormProvider>().isValidForm();
+    if (!formValid) return;
+    String? response = await context.read<LoginFormProvider>().login();
     if (response == null) {
-      final UserDto? loginUser = authService.userDto;
-      // final String screen = loginUser!.firstLogin ? 'complete-profile':'home';
-      final Widget screen = loginUser!.firstLogin ? const CompleteProfileScreen() : const HomeScreen();
-
-      // Navigator.pushReplacementNamed(context, screen);
+      // ignore: use_build_context_synchronously
+      UserDto? loginUser = context.read<LoginFormProvider>().getLoggedUser();
+      final Widget screen = loginUser.firstLogin ? const CompleteProfileScreen() : const HomeScreen();
       Navigator.of(context).push(CustomPageRouter(child: screen, typeTransition: 2, axisDirection: AxisDirection.right));
       await Future.delayed(const Duration(milliseconds: 1000));
       NotificationService.showSuccessDialogAlert(context, 'Bienvenido', CommonConstant.LOGIN_SUCCESS_MESSAGE, null);
-    } else {
-      // TODO: Show error message
-      // ignore: use_build_context_synchronously
-      NotificationService.showErrorDialogAlert(context, response);
-    }
-    loginForm.isLoading = false;
+      return;
+    } 
+    NotificationService.showErrorDialogAlert(context, response);
   }
 
   @override
   Widget build(BuildContext context) {
 
     final loginForm = Provider.of<LoginFormProvider>(context);
-    final authService = Provider.of<AuthService>(context);
 
     return Container(
       child: Form(
@@ -162,7 +154,7 @@ class _LoginForm extends StatelessWidget {
               onPressed: loginForm.isLoading ? null : () async {
                 FocusScope.of(context).unfocus();
                 // TODO Login form (submit)
-                _login(context, loginForm, authService);
+                _login(context);
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),

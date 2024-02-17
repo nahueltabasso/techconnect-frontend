@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:techconnect_frontend/providers/complete_profile_provider.dart';
-import 'package:techconnect_frontend/ui/input_decorations.dart';
-import 'package:techconnect_frontend/utils/constants.dart';
+import 'package:techconnect_frontend/shared/input_decorations.dart';
+import 'package:techconnect_frontend/shared/constants.dart';
 
 class PersonalDataForm extends StatefulWidget {
 
