@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:techconnect_frontend/providers/complete_profile_provider.dart';
+import 'package:techconnect_frontend/providers/profile/complete_profile_provider.dart';
 
 class UploadProfilePhotoForm extends StatefulWidget {
 

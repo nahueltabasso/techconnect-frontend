@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:techconnect_frontend/providers/complete_profile_provider.dart';
+import 'package:techconnect_frontend/providers/profile/complete_profile_provider.dart';
 import 'package:techconnect_frontend/shared/input_decorations.dart';
 
 class StudyHobbyForm extends StatefulWidget {

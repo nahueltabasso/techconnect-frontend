@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:techconnect_frontend/providers/complete_profile_provider.dart';
+import 'package:techconnect_frontend/providers/profile/complete_profile_provider.dart';
 import 'package:techconnect_frontend/screens/auth/check_auth_screen.dart';
 import 'package:techconnect_frontend/screens/auth/forgor_password_screen.dart';
 import 'package:techconnect_frontend/screens/auth/login_screen.dart';
