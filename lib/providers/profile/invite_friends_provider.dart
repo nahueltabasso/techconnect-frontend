@@ -43,8 +43,8 @@ class InviteFriendsProvider extends ChangeNotifier {
     BuildContext? context = ContextService().context!;
     final userProfileService = Provider.of<UserProfileService>(context, listen: false);
     try {
-      // final fromUser = userProfileService.loggedUserProfile;
-      final fromUser = await userProfileService.getUserProfileById(31);
+      final fromUser = userProfileService.loggedUserProfile!;
+      // final fromUser = await userProfileService.getUserProfileById(31);
 
       FriendRequestDto? friendRequestDto = FriendRequestDto(
         id: null,

@@ -12,11 +12,9 @@ class InviteFriendCard extends StatelessWidget {
   bool? flagButton = true;
 
   InviteFriendCard({super.key, required this.userProfileDto}) {
-    print('VALOR DE LA BANDERA $flagButton');
     flagButton = true;
   }
 
-// Future<void>
   void _inviteFriend(BuildContext context, InviteFriendsProvider provider) async {
     print("Entra");
     final friendRequestDto = await provider.sendFriendRequest(userProfileDto);

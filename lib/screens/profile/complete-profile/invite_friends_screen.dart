@@ -30,7 +30,7 @@ class InviteFriendsScreen extends StatelessWidget {
             future: Provider.of<InviteFriendsProvider>(context, listen: false).getNearbyPossiblesFriends(),
             builder: (context, AsyncSnapshot<List<UserProfileDto>?> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
+                return const LoadingScreen(titleAppBar: screenTitle);
               }
 
               if (Provider.of<InviteFriendsProvider>(context, listen: false).isLoading) {
