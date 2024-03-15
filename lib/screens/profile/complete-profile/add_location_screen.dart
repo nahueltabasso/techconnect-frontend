@@ -47,10 +47,7 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
   }
 
   void _addLocation(LatLng position) {
-    print(position);
-    // print('longitud del set')
     var flag = _markers.length == 0 ? true : false;
-    print('VALOR DE FLAG $flag');
     _markers.add(
       Marker(
         markerId: MarkerId(position.toString()),
@@ -78,10 +75,10 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(), 
-              child: const Text('Cancelar'),
               style: TextButton.styleFrom(
                 foregroundColor: Colors.lightBlue
               ),
+              child: const Text('Cancelar'),
             ),
             TextButton(
               style: TextButton.styleFrom(
@@ -149,7 +146,7 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
                   NotificationService.showInfoDialogAlert(
                     context,
                     'Bienvenido',
-                    'Hola ${locationDto.userProfileDTO.firstName}, ahora puedes usar la aplicacion',
+                    'Hola ${locationDto.userProfileDTO.firstName}, antes de empezar, puedes agregar algunos amigos',
                     null
                   );
                 }
