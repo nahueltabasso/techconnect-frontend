@@ -45,7 +45,7 @@ class RegisterFormProvider extends ChangeNotifier {
         googleUser: false,
         facebookUser: false,
         appleUser: false,
-        firstLogin: false,
+        firstLogin: true,
         roles: null,
         userLocked: false,
         failsAttemps: 0

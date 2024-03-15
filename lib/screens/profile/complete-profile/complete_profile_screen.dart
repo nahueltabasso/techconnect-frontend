@@ -3,7 +3,7 @@ import 'package:im_stepper/stepper.dart';
 import 'package:provider/provider.dart';
 import 'package:techconnect_frontend/models/user_profile_dto.dart';
 import 'package:techconnect_frontend/providers/profile/complete_profile_provider.dart';
-import 'package:techconnect_frontend/screens/profile/add_location_screen.dart';
+import 'package:techconnect_frontend/screens/profile/complete-profile/add_location_screen.dart';
 import 'package:techconnect_frontend/screens/profile/forms/personal_data_form.dart';
 import 'package:techconnect_frontend/screens/profile/forms/study_hobby_form.dart';
 import 'package:techconnect_frontend/screens/profile/forms/upload_profile_photo_form.dart';

@@ -8,9 +8,8 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:techconnect_frontend/models/location_dto.dart';
 import 'package:techconnect_frontend/providers/profile/complete_profile_provider.dart';
-import 'package:techconnect_frontend/screens/home_screen.dart';
+import 'package:techconnect_frontend/screens/profile/complete-profile/invite_friends_screen.dart';
 import 'package:techconnect_frontend/services/notification_service.dart';
-import 'package:techconnect_frontend/services/user_profile_servide.dart';
 import 'package:techconnect_frontend/shared/custom_page_route.dart';
 
 class AddLocationScreen extends StatefulWidget {
@@ -143,7 +142,9 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
 
                 LocationDto? locationDto = await context.read<CompleteProfileProvider>().saveUserLocation(position);
                 if (locationDto != null) {
-                  Navigator.of(context).push(CustomPageRouter(child: const HomeScreen(), typeTransition: 2, axisDirection: AxisDirection.right));
+                  int userProfileId = locationDto.userProfileDTO.id!;
+                  Navigator.of(context).push(CustomPageRouter(
+                    child: InviteFriendsScreen(userProfileId: userProfileId,), typeTransition: 2, axisDirection: AxisDirection.right));
                   await Future.delayed(const Duration(milliseconds: 700));
                   NotificationService.showInfoDialogAlert(
                     context,

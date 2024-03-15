@@ -4,8 +4,9 @@ import 'package:techconnect_frontend/models/user_dto.dart';
 import 'package:techconnect_frontend/providers/auth/login_form_provider.dart';
 import 'package:techconnect_frontend/screens/auth/forgor_password_screen.dart';
 import 'package:techconnect_frontend/screens/auth/register_user_screen.dart';
-import 'package:techconnect_frontend/screens/home_screen.dart';
-import 'package:techconnect_frontend/screens/profile/complete_profile_screen.dart';
+// import 'package:techconnect_frontend/screens/home_screen.dart';
+import 'package:techconnect_frontend/screens/profile/complete-profile/complete_profile_screen.dart';
+import 'package:techconnect_frontend/screens/profile/complete-profile/invite_friends_screen.dart';
 import 'package:techconnect_frontend/services/notification_service.dart';
 import 'package:techconnect_frontend/shared/input_decorations.dart';
 import 'package:techconnect_frontend/shared/constants.dart';
@@ -76,7 +77,7 @@ class _LoginForm extends StatelessWidget {
     if (response == null) {
       // ignore: use_build_context_synchronously
       UserDto? loginUser = context.read<LoginFormProvider>().getLoggedUser();
-      final Widget screen = loginUser.firstLogin ? const CompleteProfileScreen() : const HomeScreen();
+      final Widget screen = loginUser.firstLogin ? const CompleteProfileScreen() : InviteFriendsScreen(userProfileId: 31,);
       Navigator.of(context).push(CustomPageRouter(child: screen, typeTransition: 2, axisDirection: AxisDirection.right));
       await Future.delayed(const Duration(milliseconds: 1000));
       NotificationService.showSuccessDialogAlert(context, 'Bienvenido', CommonConstant.LOGIN_SUCCESS_MESSAGE, null);

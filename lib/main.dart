@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:techconnect_frontend/providers/profile/complete_profile_provider.dart';
+import 'package:techconnect_frontend/providers/profile/invite_friends_provider.dart';
 import 'package:techconnect_frontend/screens/auth/check_auth_screen.dart';
 import 'package:techconnect_frontend/screens/auth/forgor_password_screen.dart';
 import 'package:techconnect_frontend/screens/auth/login_screen.dart';
 import 'package:techconnect_frontend/screens/auth/register_user_screen.dart';
 import 'package:techconnect_frontend/screens/auth/reset_password_screen.dart';
 import 'package:techconnect_frontend/screens/home_screen.dart';
-import 'package:techconnect_frontend/screens/profile/add_location_screen.dart';
-import 'package:techconnect_frontend/screens/profile/complete_profile_screen.dart';
+import 'package:techconnect_frontend/screens/profile/complete-profile/add_location_screen.dart';
+import 'package:techconnect_frontend/screens/profile/complete-profile/complete_profile_screen.dart';
+import 'package:techconnect_frontend/screens/profile/complete-profile/invite_friends_screen.dart';
 import 'package:techconnect_frontend/services/auth_service.dart';
 import 'package:techconnect_frontend/services/context_service.dart';
 import 'package:techconnect_frontend/services/notification_service.dart';
@@ -31,7 +33,8 @@ class AppState extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => AuthService()),
         ChangeNotifierProvider(create: (context) => UserProfileService()),
-        ChangeNotifierProvider(create: (context) => CompleteProfileProvider(),)
+        ChangeNotifierProvider(create: (context) => CompleteProfileProvider(),),
+        ChangeNotifierProvider(create: (context) => InviteFriendsProvider())
       ],
       child: const MyApp(),
     );
@@ -58,6 +61,7 @@ class MyApp extends StatelessWidget {
         'reset-password': (context) => const ResetPasswordScreen(),
         'complete-profile': (context) => const CompleteProfileScreen(),
         'add-location': (context) => const AddLocationScreen(),
+        'invite-friends': (context) => InviteFriendsScreen(userProfileId: 1),
         'home':(context) => const HomeScreen(),
       },
       scaffoldMessengerKey: NotificationService.messengerKey,

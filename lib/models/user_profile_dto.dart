@@ -14,9 +14,9 @@ class UserProfileDto {
     bool verifiedProfile;
     dynamic personalStatus;
     dynamic studies;
-    String biography;
+    String? biography;
     int userId;
-    bool activeProfile;
+    bool? activeProfile;
 
     UserProfileDto({
         this.id,
@@ -29,9 +29,9 @@ class UserProfileDto {
         required this.verifiedProfile,
         required this.personalStatus,
         required this.studies,
-        required this.biography,
+        this.biography,
         required this.userId,
-        required this.activeProfile,
+        this.activeProfile,
     });
 
     factory UserProfileDto.fromRawJson(String str) => UserProfileDto.fromJson(json.decode(str));

@@ -17,4 +17,8 @@ class CommonConstant {
   static String FIRST_NAME_ERROR = "El nombre no puede estar vacio!";
   static String LAST_NAME_ERROR = "El apellido no puede estar vacio!";
   static String LOCATION_NOT_VALID = "La ubicacion seleccionada no es valida! Por favor elige otra";
+  static String TO_USER_NOT_FOUND = "El usuario al que le envias la solicitud no exist";
+  static String REQUEST_HAS_ALREADY_BEEN_SUBMITTED = "Ya le enviaste una solicitud a este usuario";
+  static String ALREADY_FRIENDS = "Ya son amigos!";
+  static String NOT_EXISTS_FRIEND_REQUEST = "No existe una solicitud de amistad entre estos dos usuarios";
 }

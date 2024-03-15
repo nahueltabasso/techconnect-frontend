@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:techconnect_frontend/config/app_config.dart';
+import 'package:techconnect_frontend/models/friend_request_dto.dart';
 import 'package:techconnect_frontend/models/http_error_dto.dart';
 import 'package:techconnect_frontend/models/location_dto.dart';
 import 'package:techconnect_frontend/models/user_profile_dto.dart';
@@ -114,6 +115,35 @@ class UserProfileService extends ChangeNotifier {
     }
   }
 
+  Future<List<UserProfileDto>?> getPossibleFriends(int userProfileId) async {
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${await storage.read(key: 'accessToken')}'
+    };
+
+    final url = Uri.http(_baseUrl, '/api/users/user-profile/suggest-possible-friends/$userProfileId');
+    final response = await http.get(url, headers: headers);
+    if (response.statusCode == 200) {
+      List<UserProfileDto> dtoList = (json.decode(response.body) as List)
+              .map((i) => UserProfileDto.fromJson(i)).toList();
+
+      return dtoList;
+    }
+    return null;
+  }
+
+  Future<UserProfileDto> getUserProfileById(int userProfileId) async {
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${await storage.read(key: 'accessToken')}'
+    };
+
+    final url = Uri.http(_baseUrl, '/api/users/user-profile/$userProfileId');
+    final response = await http.get(url, headers: headers);
+
+    return UserProfileDto.fromRawJson(response.body);
+  }
+
   jsonToFormData(http.MultipartRequest request, Map<String, dynamic> data) {
     for (var key in data.keys) {
       request.fields[key] = data[key].toString();
@@ -121,6 +151,38 @@ class UserProfileService extends ChangeNotifier {
     return request;
   }
 
+  Future<FriendRequestDto?> sendFriendRequest(FriendRequestDto dto, BuildContext context) async {
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${await storage.read(key: 'accessToken')}'
+    };
+
+    try {
+      final url = Uri.http(_baseUrl, '/api/users/friend-request');
+      final response = await http.post(url, headers: headers, body: json.encode(dto));
+      // Validated if the status code is correct
+      if (response.statusCode == 201) {
+        var friendRequestDto = FriendRequestDto.fromRawJson(response.body);
+        return friendRequestDto;
+      }
+      // In this point happened an error
+      if (response.statusCode == 500) {
+        final Map<String, dynamic> error = json.decode(response.body);
+        var msg = "";
+        if (error["error"] == 'TO_USER_NOT_EXITS') msg = CommonConstant.TO_USER_NOT_FOUND;
+        if (error["error"] == 'REQUEST_HAS_ALREADY_BEEN_SUBMITTED') msg = CommonConstant.REQUEST_HAS_ALREADY_BEEN_SUBMITTED;
+        if (error["error"] == 'ALREADY_FRIENDS') msg = CommonConstant.ALREADY_FRIENDS;
+        if (error["error"] == 'NOT_EXISTS_FRIEND_REQUEST') msg = CommonConstant.NOT_EXISTS_FRIEND_REQUEST;
+        
+        print("Error message $msg");
+        NotificationService.showInfoDialogAlert(context, 'Atencion!', msg, null);
+      }
+      
+    } catch (e) {
+      print(e);      
+    }
+    return null;
+  }
 }
 
 
