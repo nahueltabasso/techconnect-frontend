@@ -116,6 +116,7 @@ class AuthService extends ChangeNotifier {
       await storage.write(key: "idUser", value: decodeResponse["id"].toString());
       await storage.write(key: "username", value: decodeResponse["username"]);
       await storage.write(key: "email", value: decodeResponse["email"]);
+      await storage.write(key: "firstLogin", value: decodeResponse["firstLogin"].toString());
       // await storage.write(key: "roles", value: decodeResponse["roles"]);
   }
 
@@ -126,6 +127,8 @@ class AuthService extends ChangeNotifier {
 
   Future<String> isAuthenticated() async {
     final token = await storage.read(key: "accessToken");
+    final firstLogin = await storage.read(key: "firstLogin");
+    print("FIRT ${firstLogin}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token'
@@ -133,10 +136,13 @@ class AuthService extends ChangeNotifier {
     final url = Uri.parse('http://$_baseUrl/api/security/auth/validate?token=$token');
     final response = await http.post(url, headers: headers, );
     if (response.statusCode == 200) {
-      // Set logged user profile in the context of app
-      BuildContext? context = ContextService().context!;
-      final userProfileService = Provider.of<UserProfileService>(context, listen: false);
-      await userProfileService.getUserProfileLogged();
+      print('$userDto');
+      if (firstLogin != "true") {
+        // Set logged user profile in the context of app
+        BuildContext? context = ContextService().context!;
+        final userProfileService = Provider.of<UserProfileService>(context, listen: false);
+        await userProfileService.getUserProfileLogged();
+      }
       return token!;
     }
     await signOut();
