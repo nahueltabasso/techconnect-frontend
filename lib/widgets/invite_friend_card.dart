@@ -16,7 +16,6 @@ class InviteFriendCard extends StatelessWidget {
   }
 
   void _inviteFriend(BuildContext context, InviteFriendsProvider provider) async {
-    print("Entra");
     final friendRequestDto = await provider.sendFriendRequest(userProfileDto);
     if (friendRequestDto != null) {
       final msg = 'La solicitud de amistad a ${friendRequestDto.toUser.firstName} se ha enviado correctamente';
