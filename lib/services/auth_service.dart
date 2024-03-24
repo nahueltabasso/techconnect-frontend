@@ -2,10 +2,13 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
 import 'package:techconnect_frontend/config/app_config.dart';
 import 'package:techconnect_frontend/models/new_user_dto.dart';
 import 'package:techconnect_frontend/models/password_dto.dart';
 import 'package:techconnect_frontend/models/user_dto.dart';
+import 'package:techconnect_frontend/services/context_service.dart';
+import 'package:techconnect_frontend/services/user_profile_servide.dart';
 import 'package:techconnect_frontend/shared/constants.dart';
 
 class AuthService extends ChangeNotifier {
@@ -58,7 +61,6 @@ class AuthService extends ChangeNotifier {
     final url = Uri.http(_baseUrl, '/api/security/auth/sign-in');
     final response = await http.post(url, headers: headers, body: json.encode(body));
     final Map<String, dynamic> decodeResponse = json.decode(response.body);
-    print(decodeResponse);
     if (response.statusCode == 200) {
       final user = UserDto.fromRawJson(response.body);
       setUserDto = user;
@@ -131,6 +133,10 @@ class AuthService extends ChangeNotifier {
     final url = Uri.parse('http://$_baseUrl/api/security/auth/validate?token=$token');
     final response = await http.post(url, headers: headers, );
     if (response.statusCode == 200) {
+      // Set logged user profile in the context of app
+      BuildContext? context = ContextService().context!;
+      final userProfileService = Provider.of<UserProfileService>(context, listen: false);
+      await userProfileService.getUserProfileLogged();
       return token!;
     }
     await signOut();

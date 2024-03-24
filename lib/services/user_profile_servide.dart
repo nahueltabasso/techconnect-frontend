@@ -183,6 +183,18 @@ class UserProfileService extends ChangeNotifier {
     }
     return null;
   }
+
+  Future<void> getUserProfileLogged() async {
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${await storage.read(key: 'accessToken')}'
+    };
+
+    final url = Uri.http(_baseUrl, '/api/users/user-profile/get-logged-user-profile');
+    final response = await http.get(url, headers: headers);
+    setLoggedUserProfile = UserProfileDto.fromRawJson(response.body);
+  }
+
 }
 
 

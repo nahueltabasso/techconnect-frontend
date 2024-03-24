@@ -39,7 +39,7 @@ class InviteFriendCard extends StatelessWidget {
         
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: CircleAvatarPhoto(imagePath: userProfileDto.profilePhoto!)
+                child: CircleAvatarPhoto(imagePath: userProfileDto.profilePhoto!, radius: 30)
               ),
         
               Padding(
