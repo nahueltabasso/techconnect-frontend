@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:techconnect_frontend/providers/profile/complete_profile_provider.dart';
 import 'package:techconnect_frontend/providers/profile/invite_friends_provider.dart';
+import 'package:techconnect_frontend/providers/profile/user_profile_provider.dart';
 import 'package:techconnect_frontend/screens/auth/check_auth_screen.dart';
 import 'package:techconnect_frontend/screens/auth/forgor_password_screen.dart';
 import 'package:techconnect_frontend/screens/auth/login_screen.dart';
@@ -36,8 +37,9 @@ class AppState extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => AuthService()),
         ChangeNotifierProvider(create: (context) => UserProfileService()),
-        ChangeNotifierProvider(create: (context) => CompleteProfileProvider(),),
-        ChangeNotifierProvider(create: (context) => InviteFriendsProvider())
+        ChangeNotifierProvider(create: (context) => CompleteProfileProvider()),
+        ChangeNotifierProvider(create: (context) => InviteFriendsProvider()),
+        ChangeNotifierProvider(create: (context) => UserProfileProvider())
       ],
       child: const MyApp(),
     );

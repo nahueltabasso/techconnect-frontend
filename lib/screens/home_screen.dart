@@ -6,7 +6,6 @@ import 'package:techconnect_frontend/screens/notifications/notification_screen.d
 import 'package:techconnect_frontend/screens/post/post_list_screen.dart';
 import 'package:techconnect_frontend/screens/profile/profile/friends_screen.dart';
 import 'package:techconnect_frontend/screens/profile/profile/profile_screen.dart';
-import 'package:techconnect_frontend/services/auth_service.dart';
 import 'package:techconnect_frontend/widgets/custom_bottom_navigation.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -15,31 +14,6 @@ class HomeScreen extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-
-    final authService = Provider.of<AuthService>(context, listen: false);
-
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     backgroundColor: Colors.lightBlue,
-    //     automaticallyImplyLeading: false,
-    //     title: const Center(child: Text('Inicio')),
-    //     // leading: IconButton(
-    //     //   icon: const Icon(Icons.login_outlined),
-    //     //   color: Colors.black,
-    //     //   onPressed: () {
-    //     //     authService.signOut();
-    //     //     Navigator.pushReplacementNamed(context, 'login');
-    //     //   },
-    //     // ),
-    //   ),
-    //   body: const Stack(
-    //     children: [
-
-    //       Center(child: Text('INICIO'))
-    //     ],
-    //   ),
-    //   bottomNavigationBar: const CustomBottomNavigation(),
-    // );
     return ChangeNotifierProvider(
       create: (context) => NavigationProvider(),
       child: const Scaffold(
