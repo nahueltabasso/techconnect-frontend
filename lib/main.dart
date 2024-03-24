@@ -9,6 +9,9 @@ import 'package:techconnect_frontend/screens/auth/login_screen.dart';
 import 'package:techconnect_frontend/screens/auth/register_user_screen.dart';
 import 'package:techconnect_frontend/screens/auth/reset_password_screen.dart';
 import 'package:techconnect_frontend/screens/home_screen.dart';
+import 'package:techconnect_frontend/screens/messenger/chat_screen.dart';
+import 'package:techconnect_frontend/screens/notifications/notification_screen.dart';
+import 'package:techconnect_frontend/screens/post/post_list_screen.dart';
 import 'package:techconnect_frontend/screens/profile/complete-profile/add_location_screen.dart';
 import 'package:techconnect_frontend/screens/profile/complete-profile/complete_profile_screen.dart';
 import 'package:techconnect_frontend/screens/profile/complete-profile/invite_friends_screen.dart';
@@ -63,6 +66,9 @@ class MyApp extends StatelessWidget {
         'add-location': (context) => const AddLocationScreen(),
         'invite-friends': (context) => InviteFriendsScreen(userProfileId: 1),
         'home':(context) => const HomeScreen(),
+        'posts':(context) => const PostListScreen(),
+        'notifications':(context) => const NotificationScreen(),
+        'chat':(context) => const ChatScreen(),
       },
       scaffoldMessengerKey: NotificationService.messengerKey,
       theme: ThemeData.light().copyWith(
